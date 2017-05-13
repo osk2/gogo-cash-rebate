@@ -1,0 +1,12 @@
+{
+  "name": "gogo-cash-back",
+  "version": "0.0.1",
+  "description": "Cash back calculator for Richart GOGO",
+  "main": "index.js",
+  "repository": "https://github.com/osk2/gogo-cash-back.git",
+  "author": "osk2",
+  "license": "MIT",
+  "dependencies": {
+    "xlsx": "^0.10.1"
+  }
+}
