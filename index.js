@@ -18,10 +18,22 @@ const wsjson = XLSX.utils.sheet_to_json(worksheet, {
   'comment'
   ]
 });
-const bonusRate = 0.01;
+const baseRate = 0.005;
+const isBinding = true;
+const bindingBonusRate = isBinding ? 0.01 : 0;
 let bills = _.drop(wsjson, 1);
-let totalCashBack = 0;
 let finalBills = [];
+let validTotal = 0;
+let validBonus = 0;
+
+const cashCalc = function (bill, amount, bounsRate) {
+  bill.cash = {};
+  bill.cash.base = Math.round(amount * baseRate);
+  bill.cash.binding = Math.round(amount * bindingBonusRate);
+  bill.cash.bonus = Math.round(amount * bounsRate);
+
+  return bill;
+}
 
 _.map(bills, function (bill) {
   bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
@@ -37,28 +49,26 @@ _.each(_.take(bills, args[3]), function (bill) {
     _.each(rateTable, function (rate) {
       if (rate.match.test(bill.detail)) {
         if (rate.rate !== 0) {
-          const cashRate = rate.rate + bonusRate;
-          bill.cash = Math.round(amount * cashRate);
-          totalCashBack += Math.round(amount * cashRate);
-          finalBills.push(bill);
+          validTotal += amount;
+          validBonus += amount;
+          finalBills.push(cashCalc(bill, amount, rate.rate));
         } else {
-          bill.cash = 0;
-          finalBills.push(bill);
+          finalBills.push(cashCalc(bill, 0, 0));
         }
         isCashBack = true;
         return false;
       }
     });
     if (!isCashBack) {
-      const cashRate = 0.005 + bonusRate;
-      bill.cash = Math.round(amount * cashRate);
-      totalCashBack += Math.round(amount * cashRate);
-      finalBills.push(bill)
+      validTotal += amount;
+      finalBills.push(cashCalc(bill, amount, 0));
     }
   } else {
-    bill.cash = 0;
-    finalBills.push(bill);
+    finalBills.push(cashCalc(bill, 0, 0));
   }
 });
-console.log(finalBills)
-console.log('\n回饋：' + totalCashBack)
+
+console.log(finalBills);
+console.log('\n基本回饋：', Math.round(validTotal * baseRate));
+console.log('綁定加碼：', Math.round(validTotal * bindingBonusRate));
+console.log('指定數位：', Math.round(validBonus * 0.02));

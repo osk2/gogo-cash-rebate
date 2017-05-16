@@ -10,28 +10,38 @@ module.exports = [
     'rate': 0
   },
   {
+    'item': '全家便利商店',
+    'match': /^全家便利商店﹣.*$/,
+    'rate': 0
+  },
+  {
     'item': '支付寶（淘寶／天貓）',
     'match': /^ALIPAY\*TAOBAO\.COM.*$/,
-    'rate': 0.025
+    'rate': 0.02
   },
   {
     'item': '蝦皮拍賣',
     'match': /^蝦皮拍賣.*$/,
-    'rate': 0.025
+    'rate': 0.02
   },
   {
     'item': '街口支付',
     'match': /^街口﹣.*$/,
-    'rate': 0.025
+    'rate': 0.02
   },
   {
     'item': 'Lativ',
     'match': /^米格國際股份有限公司.*$/,
-    'rate': 0.025
+    'rate': 0.02
   },
   {
     'item': 'PChome',
     'match': /^網路家庭國際資訊股份有限公司.*$/,
-    'rate': 0.025
+    'rate': 0.02
+  },
+  {
+    'item': 'Airbnb',
+    'match': /^AIRBNB \* .*$/,
+    'rate': 0.02
   }
 ]
