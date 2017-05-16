@@ -18,38 +18,47 @@ const wsjson = XLSX.utils.sheet_to_json(worksheet, {
   'comment'
   ]
 });
-// Remove first record and resort by `pay_date`
-const bills = _.drop(wsjson, 1);
 const bonusRate = 0.01;
+let bills = _.drop(wsjson, 1);
 let totalCashBack = 0;
+let finalBills = [];
+
+_.map(bills, function (bill) {
+  bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
+  return bill;
+});
 
 _.each(_.take(bills, args[3]), function (bill) {
-  // Make sure amount is positive
-  let amount = bill.amount.replace('NT$', '').replace(',', '');
 
-  try {
-    amount = Math.abs(parseInt(amount));
-  } catch (err) {
-    return false;
-  }
-
-  if (amount > 0) {
+  if (bill.amount < 0) {
     let isCashBack = false;
+    let amount = Math.abs(bill.amount);
 
     _.each(rateTable, function (rate) {
       if (rate.match.test(bill.detail)) {
         if (rate.rate !== 0) {
-          totalCashBack += Math.round(amount * (rate.rate + bonusRate));
+          const cashRate = rate.rate + bonusRate;
+          bill.cash = Math.round(amount * cashRate);
+          totalCashBack += Math.round(amount * cashRate);
+          finalBills.push(bill);
+        } else {
+          bill.cash = 0;
+          finalBills.push(bill);
         }
         isCashBack = true;
         return false;
       }
     });
     if (!isCashBack) {
-      totalCashBack += Math.round(amount * (0.015 + bonusRate));
+      const cashRate = 0.005 + bonusRate;
+      bill.cash = Math.round(amount * cashRate);
+      totalCashBack += Math.round(amount * cashRate);
+      finalBills.push(bill)
     }
+  } else {
+    bill.cash = 0;
+    finalBills.push(bill);
   }
-  console.log(bill.detail)
 });
-
+console.log(finalBills)
 console.log('\n回饋：' + totalCashBack)
