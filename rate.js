@@ -28,5 +28,10 @@ module.exports = [
     'item': 'Lativ',
     'match': /^米格國際股份有限公司.*$/,
     'rate': 0.025
+  },
+  {
+    'item': 'PChome',
+    'match': /^網路家庭國際資訊股份有限公司.*$/,
+    'rate': 0.025
   }
 ]
