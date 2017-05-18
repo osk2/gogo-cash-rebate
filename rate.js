@@ -10,6 +10,16 @@ module.exports = [
     'rate': 0
   },
   {
+    'item': 'iCash自動加值',
+    'match': /^icash自動加值.*$/,
+    'rate': 0
+  },
+  {
+    'item': '悠遊卡自動加值',
+    'match': /^悠遊卡自動加值.*$/,
+    'rate': 0
+  },
+  {
     'item': '全家便利商店',
     'match': /^全家便利商店﹣.*$/,
     'rate': 0
