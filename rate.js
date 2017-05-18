@@ -43,5 +43,40 @@ module.exports = [
     'item': 'Airbnb',
     'match': /^AIRBNB \* .*$/,
     'rate': 0.02
+  },
+  {
+    'item': '智付通',
+    'match': /^智付通﹣.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': '星巴克線上儲值',
+    'match': /^統一星巴克線上儲值.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': 'Google Wallet',
+    'match': /^GOOGLE \*.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': '博客來',
+    'match': /^博客來數位科技股份有限公司.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': '歐付寶',
+    'match': /^allPay Electronic Payment.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': '小米',
+    'match': /^台灣小米通訊有限公司.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': 'Pinkoi',
+    'match': /^Ｐｉｎｋｏｉ˙ｃｏｍ.*$/,
+    'rate': 0.02
   }
 ]
