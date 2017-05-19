@@ -1,5 +1,6 @@
 const XLSX = require('xlsx');
 const _ = require('lodash');
+const chalk = require('chalk');
 const rateTable = require('./rate');
 
 const args = process.argv;
@@ -68,7 +69,17 @@ _.each(_.take(bills, args[3]), function (bill) {
   }
 });
 
+const cashBasic = Math.round(validTotal * baseRate);
+const cashBinding = Math.round(validTotal * bindingBonusRate);
+const cashBonus = Math.round(validBonus * 0.02);
+
 console.log(finalBills);
-console.log('\n基本回饋：', Math.round(validTotal * baseRate));
-console.log('綁定加碼：', Math.round(validTotal * bindingBonusRate));
-console.log('指定數位：', Math.round(validBonus * 0.02));
+console.log('\n基本回饋：', cashBasic);
+if (cashBinding + cashBonus >= 500) {
+  console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
+  console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
+  console.log('加碼回饋到達上限，以500計');
+} else {
+  console.log('綁定加碼：', cashBinding);
+  console.log('指定數位：', cashBonus);
+}
