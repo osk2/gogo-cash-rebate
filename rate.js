@@ -88,5 +88,10 @@ module.exports = [
     'item': 'Pinkoi',
     'match': /^Ｐｉｎｋｏｉ˙ｃｏｍ.*$/,
     'rate': 0.02
+  },
+  { 
+    'item': 'iTunes', 
+    'match': /^ITUNES\.COM\/BILL.*$/, 
+    'rate': 0.02 
   }
 ]
