@@ -46,8 +46,9 @@ module.exports = [
   },
   {
     'item': 'PChome',
-    'match': /^網路家庭國際資訊股份有限公司.*$/,
-    'rate': 0.02
+    'match': /^網路家庭國際資訊股份.*$/,
+    'rate': 0.02,
+    'note': '若為分期字串會被截斷，故只能判斷至"股份"'
   },
   {
     'item': 'Airbnb',
