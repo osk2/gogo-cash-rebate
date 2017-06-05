@@ -1,6 +1,8 @@
 # gogo-cash-back
 
-Cash back calculator for Richart @GoGo
+Cash rebate calculator for Taishin @GoGo
+
+> 台新 @GoGo 現金回饋計算機
 
 ## Installation
 
@@ -20,7 +22,7 @@ e.g.
 node . Richart_transaction_20170513.xls 10
 ```
 
-will calculate cash back of latest 10 records of bill.
+will calculate total cash reabte of latest 10 records of bill.
 
 ## License
 
