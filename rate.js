@@ -100,6 +100,11 @@ module.exports = [
   { 
     'item': 'iTunes', 
     'match': /^ITUNES\.COM\/BILL.*$/, 
+    'rate': 0.02
+  },
+  {
+    'item': 'Yahoo',
+    'match': /^雅虎奇摩.*$/,
     'rate': 0.02 
   }
 ]
