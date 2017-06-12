@@ -41,7 +41,7 @@ _.map(bills, function (bill) {
   return bill;
 });
 
-_.each(_.take(bills, args[3]), function (bill) {
+_.each(_.take(bills, (args[3]) - 1), function (bill) {
 
   if (bill.amount < 0) {
     let isCashBack = false;
@@ -79,7 +79,9 @@ if (cashBinding + cashBonus >= 500) {
   console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
   console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
   console.log('加碼回饋到達上限，以500計');
+  console.log('回饋共計：', cashBasic + 500);
 } else {
   console.log('綁定加碼：', cashBinding);
   console.log('指定數位：', cashBonus);
+  console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
 }
