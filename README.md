@@ -14,15 +14,9 @@ yarn
 
 ## Usage
 
-`node . <filename> <number_of_record>`
+`node .`
 
-e.g.
-
-```
-node . Richart_transaction_20170513.xls 10
-```
-
-will calculate total cash reabte of latest 10 records of bill.
+App will listen on port 9090
 
 ## License
 
