@@ -2,30 +2,82 @@ const XLSX = require('xlsx');
 const _ = require('lodash');
 const chalk = require('chalk');
 const rateTable = require('./rate');
+const express = require('express');
+const app = express();
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart();
 
-const args = process.argv;
-const workbook = XLSX.readFile(args[2]);
-const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-const wsjson = XLSX.utils.sheet_to_json(worksheet, {
-  header: 
-  [
-  'shop_date',
-  'pay_date',
-  'card',
-  'amount',
-  'detail',
-  'currency',
-  'category',
-  'comment'
-  ]
-});
 const baseRate = 0.005;
 const isBinding = true;
 const bindingBonusRate = isBinding ? 0.01 : 0;
-let bills = _.drop(wsjson, 1);
 let finalBills = [];
 let validTotal = 0;
 let validBonus = 0;
+
+const xlsConverter = function (path) {
+  try {
+    const workbook = XLSX.readFile(path);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const wsjson = XLSX.utils.sheet_to_json(worksheet, {
+      header: [
+        'shop_date',
+        'pay_date',
+        'card',
+        'amount',
+        'detail',
+        'currency',
+        'category',
+        'comment'
+      ]
+    });
+    let bills = _.drop(wsjson, 1);
+    bills.success = true;
+    return bills;
+  } catch (ex) {
+    return {success: false, reason: ex};
+  }
+}
+
+const recordProcessor = function (bills) {
+  return _.map(bills, function (bill) {
+    bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
+    return bill;
+  });
+}
+
+const analyzeRecord = function (bills, count) {
+  _.each(_.take(bills, count - 1), function (bill) {
+
+    if (bill.amount < 0) {
+      let isCashBack = false;
+      let amount = Math.abs(bill.amount);
+
+      _.each(rateTable, function (rate) {
+        if (rate.match.test(bill.detail)) {
+          if (rate.rate !== 0) {
+            validTotal += amount;
+            validBonus += amount;
+            finalBills.push(cashCalc(bill, amount, rate.rate));
+          } else {
+            finalBills.push(cashCalc(bill, 0, 0));
+          }
+          isCashBack = true;
+          return false;
+        }
+      });
+      if (!isCashBack) {
+        validTotal += amount;
+        finalBills.push(cashCalc(bill, amount, 0));
+      }
+    } else {
+      finalBills.push(cashCalc(bill, 0, 0));
+    }
+  });
+
+  const cashBasic = Math.round(validTotal * baseRate);
+  const cashBinding = Math.round(validTotal * bindingBonusRate);
+  const cashBonus = Math.round(validBonus * 0.02);
+}
 
 const cashCalc = function (bill, amount, bounsRate) {
   bill.cash = {};
@@ -36,52 +88,28 @@ const cashCalc = function (bill, amount, bounsRate) {
   return bill;
 }
 
-_.map(bills, function (bill) {
-  bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
-  return bill;
+app.use(express.static('public'));
+
+app.post('/upload', multipartMiddleware, function (req, res) {
+  let output = xlsConverter(req.files.xls.path)
+
+  output = recordProcessor(output);
+  res.json(output);
 });
 
-_.each(_.take(bills, (args[3]) - 1), function (bill) {
+// console.log(finalBills);
+// console.log('\n基本回饋：', cashBasic);
+// if (cashBinding + cashBonus >= 500) {
+//   console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
+//   console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
+//   console.log('加碼回饋到達上限，以500計');
+//   console.log('回饋共計：', cashBasic + 500);
+// } else {
+//   console.log('綁定加碼：', cashBinding);
+//   console.log('指定數位：', cashBonus);
+//   console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
+// }
 
-  if (bill.amount < 0) {
-    let isCashBack = false;
-    let amount = Math.abs(bill.amount);
-
-    _.each(rateTable, function (rate) {
-      if (rate.match.test(bill.detail)) {
-        if (rate.rate !== 0) {
-          validTotal += amount;
-          validBonus += amount;
-          finalBills.push(cashCalc(bill, amount, rate.rate));
-        } else {
-          finalBills.push(cashCalc(bill, 0, 0));
-        }
-        isCashBack = true;
-        return false;
-      }
-    });
-    if (!isCashBack) {
-      validTotal += amount;
-      finalBills.push(cashCalc(bill, amount, 0));
-    }
-  } else {
-    finalBills.push(cashCalc(bill, 0, 0));
-  }
-});
-
-const cashBasic = Math.round(validTotal * baseRate);
-const cashBinding = Math.round(validTotal * bindingBonusRate);
-const cashBonus = Math.round(validBonus * 0.02);
-
-console.log(finalBills);
-console.log('\n基本回饋：', cashBasic);
-if (cashBinding + cashBonus >= 500) {
-  console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
-  console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
-  console.log('加碼回饋到達上限，以500計');
-  console.log('回饋共計：', cashBasic + 500);
-} else {
-  console.log('綁定加碼：', cashBinding);
-  console.log('指定數位：', cashBonus);
-  console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
-}
+app.listen(9090, function () {
+  console.log('App listening on port 9090!');
+})
