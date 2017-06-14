@@ -7,44 +7,41 @@
   <title>@GoGo Rebate Calculator</title>
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/dropzone/4.3.0/dropzone.min.css" integrity="sha256-e47xOkXs1JXFbjjpoRr1/LhVcqSzRmGmPqsrUQeVs+g=" crossorigin="anonymous"> -->
-  <!-- <link rel="stylesheet" href="css/dropzone.css"> -->
 </head>
 <body>
-  <!-- <div class="container">
-    <div class="timeline-item" date-is="20-07-1990">
-      <p>I'm speaking with myself, number one, because I have a very good brain and I've said a lot of things.</p>
+  <div class="container" v-cloak>
+    <div class="timeline-item" v-for="record in records" v-bind:date-is="record.pay_date">
+      <p>{{record.detail}}</p>
+      <p>使用 <strong>{{record.card}}</strong> 金額 <strong>{{record.amount}}</strong></p>
+      <p>備註： {{record.comment}}</p>
     </div>
-    
-    <div class="timeline-item" date-is="20-07-1990">
-      <p>I'm speaking with myself, number one, because I have a very good brain and I've said a lot of things.</p>
-    </div>
-    
-    <div class="timeline-item" date-is="20-07-1990">
-      <p>I'm speaking with myself, number one, because I have a very good brain and I've said a lot of things.</p>
-    </div>
-  </div> -->
+  </div>
   <form action="/upload">
     <input name="xls" type="file">
     <button type="submit">Submit</button>
   </form>
   <script src="//cdn.jsdelivr.net/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-  <!-- <script src="//cdn.jsdelivr.net/dropzone/4.3.0/dropzone.min.js" integrity="sha256-p2l8VeL3iL1J0NxcXbEVtoyYSC+VbEbre5KHbzq1fq8=" crossorigin="anonymous"></script> -->
+  <script src="//unpkg.com/vue"></script>
   <script>
     $('form').on('submit', function (e) {
       e.preventDefault();
-      var dataform = new FormData($('form')[0]);
       $.ajax({
-          url: '/upload',
-          type: 'POST',
-          data: dataform,
-          success: function (res) {
-            console.log(res)
-          },
-          cache: false,
-          contentType: false,
-          processData: false
+        url: '/upload',
+        type: 'POST',
+        data: new FormData($('form')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function (data) {
+          new Vue({
+            el: '.container',
+            data: {records: data},
+            mounted() {
+              $('form').hide();
+            }
+          });
+        }
       });
     });
   </script>

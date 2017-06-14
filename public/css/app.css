@@ -10,11 +10,17 @@ p {
   flex-direction: column;
   height: 100%;
 }
+
+/* TIMELINE */
+
 .timeline-item {
   padding: 3em 2em 2em;
   position: relative;
   color: rgba(0, 0, 0, 0.7);
   border-left: 2px solid rgba(0, 0, 0, 0.3);
+}
+.timeline-item:hover {
+  background-color: #eee;
 }
 .timeline-item::before {
   content: attr(date-is);
@@ -42,4 +48,10 @@ p {
   -o-border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
+}
+
+/* VUE */
+
+[v-cloak] {
+  display: none;
 }

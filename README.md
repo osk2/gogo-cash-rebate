@@ -14,7 +14,9 @@ yarn
 
 ## Usage
 
-`node .`
+```
+node .
+```
 
 App will listen on port 9090
 
