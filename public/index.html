@@ -25,25 +25,19 @@
   <script src="components/axios/dist/axios.min.js"></script>
   <script src="components/vue/dist/vue.min.js"></script>
   <script>
+    const timeline = new Vue({
+      el: '.timeline',
+      data: {records: []}
+    });
+
     $('form').on('submit', function (e) {
       e.preventDefault();
-      $.ajax({
-        url: '/upload',
-        type: 'POST',
-        data: new FormData($('form')[0]),
-        cache: false,
-        contentType: false,
-        processData: false,
-        success: function (data) {
-          new Vue({
-            el: '.container',
-            data: {records: data},
-            mounted() {
-              $('form').hide();
-            }
-          });
-        }
-      });
+      axios
+      .post('/upload', new FormData($('form')[0]))
+      .then(response => {
+        timeline.records = response.data;
+        $('form').hide(500);
+      })
     });
   </script>
 </body>
