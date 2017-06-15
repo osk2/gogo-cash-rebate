@@ -8,13 +8,19 @@ Cash rebate calculator for Taishin @GoGo
 
 Make sure you have [yarn](https://yarnpkg.com/) installed
 
-```
+```shell
 yarn
+```
+
+and 
+
+```shell
+bower install
 ```
 
 ## Usage
 
-```
+```shell
 node .
 ```
 
