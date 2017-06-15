@@ -25,7 +25,10 @@
         <div class="timeline" v-cloak>
           <div class="timeline-item" v-for="record in records" v-bind:date-is="record.pay_date">
             <p>{{record.detail}}</p>
-            <p>使用 <strong>{{record.card}}</strong> 金額 <strong>{{record.amount}}</strong></p>
+            <p>
+              使用 <strong class="card">{{record.card}}</strong> 
+              金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
+            </p>
             <p>備註： {{record.comment}}</p>
           </div>
         </div>
@@ -41,7 +44,10 @@
   <script>
     const timeline = new Vue({
       el: '.timeline',
-      data: {records: []}
+      data: {records: []},
+      updated() {
+        $('form').hide(500);
+      }
     });
 
     $('form').on('submit', function (e) {
@@ -50,7 +56,6 @@
       .post('/upload', new FormData($('form')[0]))
       .then(response => {
         timeline.records = response.data;
-        $('form').hide(500);
       })
     });
   </script>

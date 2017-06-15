@@ -57,6 +57,12 @@ form {
      border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
 }
+.amount.red {
+  color: #bc5f46;
+}
+.amount.green {
+  color: #27ae60;
+}
 
 /* VUE */
 
