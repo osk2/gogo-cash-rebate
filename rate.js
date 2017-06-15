@@ -88,7 +88,7 @@ module.exports = [
     'rate': 0.02
   },
   {
-    'item': '小米',
+    'item': '小米網購',
     'match': /^台灣小米通訊有限公司.*$/,
     'rate': 0.02
   },
@@ -106,5 +106,10 @@ module.exports = [
     'item': 'Yahoo',
     'match': /^雅虎奇摩.*$/,
     'rate': 0.02 
+  },
+  {
+    'item': '迪卡儂網購',
+    'match': /^ＤＥＣＡＴＨＬＯＮ.*$/,
+    'rate': 0.02
   }
 ]
