@@ -5,14 +5,17 @@ body {
 p {
   font-size: 1em;
 }
-.container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+form {
+  margin: 1em 0;
 }
 
 /* TIMELINE */
 
+.timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 .timeline-item {
   padding: 3em 2em 1em;
   position: relative;
@@ -42,6 +45,11 @@ p {
   content: '';
   border: 2px solid rgba(0, 0, 0, 0.3);
   background: white;
+}
+.timeline-item:first-child {
+  -o-border-image: linear-gradient(to top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
+     border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
+     border-image: linear-gradient(to top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
 }
 .timeline-item:last-child {
   height: 100%;

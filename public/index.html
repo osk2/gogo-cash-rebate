@@ -9,17 +9,29 @@
   <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container" v-cloak>
-    <div class="timeline-item" v-for="record in records" v-bind:date-is="record.pay_date">
-      <p>{{record.detail}}</p>
-      <p>使用 <strong>{{record.card}}</strong> 金額 <strong>{{record.amount}}</strong></p>
-      <p>備註： {{record.comment}}</p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <form action="/upload">
+          <div class="form-group">
+            <label>@GoGo明細</label>
+            <input name="xls" type="file" class="form-control">
+          </div>
+          <button type="submit" class="btn btn-primary">分析</button>
+        </form>
+      </div>
+  
+      <div class="col-md-8 col-md-offset-2">
+        <div class="timeline" v-cloak>
+          <div class="timeline-item" v-for="record in records" v-bind:date-is="record.pay_date">
+            <p>{{record.detail}}</p>
+            <p>使用 <strong>{{record.card}}</strong> 金額 <strong>{{record.amount}}</strong></p>
+            <p>備註： {{record.comment}}</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <form action="/upload">
-    <input name="xls" type="file">
-    <button type="submit">Submit</button>
-  </form>
   <script src="components/jquery/dist/jquery.min.js"></script>
   <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="components/axios/dist/axios.min.js"></script>
