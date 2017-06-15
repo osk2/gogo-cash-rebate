@@ -14,13 +14,13 @@ p {
 /* TIMELINE */
 
 .timeline-item {
-  padding: 3em 2em 2em;
+  padding: 3em 2em 1em;
   position: relative;
   color: rgba(0, 0, 0, 0.7);
   border-left: 2px solid rgba(0, 0, 0, 0.3);
 }
 .timeline-item:hover {
-  background-color: #eee;
+  background-color: #f9f9f9;
 }
 .timeline-item::before {
   content: attr(date-is);
