@@ -14,7 +14,7 @@ let finalBills = [];
 let validTotal = 0;
 let validBonus = 0;
 
-const xlsConverter = function (path) {
+const xlsConverter = path => {
   try {
     const workbook = XLSX.readFile(path);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -38,21 +38,21 @@ const xlsConverter = function (path) {
   }
 }
 
-const recordProcessor = function (bills) {
-  return _.map(bills, function (bill) {
+const recordProcessor = bills => {
+  return _.map(bills, bill => {
     bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
     return bill;
   });
 }
 
-const analyzeRecord = function (bills, count) {
-  _.each(_.take(bills, count - 1), function (bill) {
+const analyzeRecord = (bills, count) => {
+  _.each(_.take(bills, count - 1), bill => {
 
     if (bill.amount < 0) {
       let isCashBack = false;
       let amount = Math.abs(bill.amount);
 
-      _.each(rateTable, function (rate) {
+      _.each(rateTable, rate => {
         if (rate.match.test(bill.detail)) {
           if (rate.rate !== 0) {
             validTotal += amount;
@@ -79,7 +79,7 @@ const analyzeRecord = function (bills, count) {
   const cashBonus = Math.round(validBonus * 0.02);
 }
 
-const cashCalc = function (bill, amount, bounsRate) {
+const cashCalc = (bill, amount, bounsRate) => {
   bill.cash = {};
   bill.cash.base = Math.round(amount * baseRate);
   bill.cash.binding = Math.round(amount * bindingBonusRate);
@@ -90,7 +90,7 @@ const cashCalc = function (bill, amount, bounsRate) {
 
 app.use(express.static('public'));
 
-app.post('/upload', multipartMiddleware, function (req, res) {
+app.post('/upload', multipartMiddleware, (req, res) => {
   let output = xlsConverter(req.files.xls.path)
 
   output = recordProcessor(output);
@@ -110,6 +110,6 @@ app.post('/upload', multipartMiddleware, function (req, res) {
 //   console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
 // }
 
-app.listen(9090, function () {
+app.listen(9090, () => {
   console.log('App listening on port 9090!');
 })
