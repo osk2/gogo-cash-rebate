@@ -15,7 +15,16 @@
         <form action="/upload">
           <div class="form-group">
             <label>@GoGo明細</label>
-            <input name="xls" type="file" class="form-control">
+            <input name="xls" type="file" class="form-control" accept="application/vnd.ms-excel">
+            <p class="help-block">匯入 Richart 消費明細</p>
+          </div>
+          <div class="form-group">
+            <label>起始</label>
+            <input name="start" type="number" class="form-control" value="0">
+          </div>
+          <div class="form-group">
+            <label>結束</label>
+            <input name="end" type="number" class="form-control" value="23">
           </div>
           <button type="submit" class="btn btn-primary">分析</button>
         </form>
@@ -23,7 +32,11 @@
   
       <div class="col-md-8 col-md-offset-2">
         <div class="timeline" v-cloak>
-          <div class="timeline-item" v-for="record in records" v-bind:date-is="record.pay_date">
+          <h4>基本回饋：{{bonus.basicRebate}}</h4>
+          <h4>指定通路回饋：{{bonus.bonusRebate}}</h4>
+          <h4>綁定扣款加碼：{{bonus.bindingRebate}}</h4>
+          <h4>總回饋：{{bonus.totalRebate}}</h4>
+          <div class="timeline-item" v-for="record in records" v-bind:date-is="record.posting_date">
             <p>{{record.detail}}</p>
             <p>
               使用 <strong class="card">{{record.card}}</strong> 
@@ -40,11 +53,14 @@
   <script src="components/axios/dist/axios.min.js"></script>
   <script src="components/vue/dist/vue.min.js"></script>
   <script src="components/moment/min/moment.min.js"></script>
-  <script src="components/lodash/dist/lodash.core.min.js"></script>
+  <script src="components/lodash/dist/lodash.min.js"></script>
   <script>
     const timeline = new Vue({
       el: '.timeline',
-      data: {records: []},
+      data: {
+        records: [],
+        bonus: {}
+      },
       updated() {
         $('form').hide(500);
       }
@@ -53,10 +69,18 @@
     $('form').on('submit', function (e) {
       e.preventDefault();
       axios
-      .post('/upload', new FormData($('form')[0]))
+      .post('/converter', new FormData($('form')[0]))
       .then(response => {
-        timeline.records = response.data;
+        const bills = _.reverse(_.sortBy(response.data, ['posting_date']));
+        const start = parseInt($('input[name="start"]').val());
+        const end = parseInt($('input[name="end"]').val());
+
+        timeline.records = bills;
+        return axios.post('/calculate', {bills: bills, start: start, end: end});
       })
+      .then(response => {
+        timeline.bonus = response.data;
+      });
     });
   </script>
 </body>

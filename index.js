@@ -1,27 +1,27 @@
 const XLSX = require('xlsx');
 const _ = require('lodash');
 const chalk = require('chalk');
-const rateTable = require('./rate');
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
+const rateTable = require('./rate');
+const config = require('./config');
 
-const baseRate = 0.005;
-const isBinding = true;
-const bindingBonusRate = isBinding ? 0.01 : 0;
-let finalBills = [];
-let validTotal = 0;
-let validBonus = 0;
+const baseRate = config.getBaseRate();
+const bonusRate = config.getBonusRate();
+const bindingBonusRate = config.getBindingBonusRate();
+const maxBonus = config.getBonusLimit();
 
-const xlsConverter = path => {
+const parseXLS = path=> {
   try {
     const workbook = XLSX.readFile(path);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
     const wsjson = XLSX.utils.sheet_to_json(worksheet, {
       header: [
-        'shop_date',
-        'pay_date',
+        'transaction_date',
+        'posting_date',
         'card',
         'amount',
         'detail',
@@ -31,6 +31,7 @@ const xlsConverter = path => {
       ]
     });
     let bills = _.drop(wsjson, 1);
+
     bills.success = true;
     return bills;
   } catch (ex) {
@@ -38,45 +39,22 @@ const xlsConverter = path => {
   }
 }
 
-const recordProcessor = bills => {
+const convertCurrency = bills => {
   return _.map(bills, bill => {
     bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
     return bill;
   });
 }
 
-const analyzeRecord = (bills, count) => {
-  _.each(_.take(bills, count - 1), bill => {
+const sortByPostingDate = bills => {
+  return _.sortBy(bills, ['posting_date']);
+}
 
-    if (bill.amount < 0) {
-      let isCashBack = false;
-      let amount = Math.abs(bill.amount);
+const processBills = bills => {
+  let processedBills = bills;
 
-      _.each(rateTable, rate => {
-        if (rate.match.test(bill.detail)) {
-          if (rate.rate !== 0) {
-            validTotal += amount;
-            validBonus += amount;
-            finalBills.push(cashCalc(bill, amount, rate.rate));
-          } else {
-            finalBills.push(cashCalc(bill, 0, 0));
-          }
-          isCashBack = true;
-          return false;
-        }
-      });
-      if (!isCashBack) {
-        validTotal += amount;
-        finalBills.push(cashCalc(bill, amount, 0));
-      }
-    } else {
-      finalBills.push(cashCalc(bill, 0, 0));
-    }
-  });
-
-  const cashBasic = Math.round(validTotal * baseRate);
-  const cashBinding = Math.round(validTotal * bindingBonusRate);
-  const cashBonus = Math.round(validBonus * 0.02);
+  processedBills = convertCurrency(processedBills);
+  return sortByPostingDate(processedBills);
 }
 
 const cashCalc = (bill, amount, bounsRate) => {
@@ -84,32 +62,71 @@ const cashCalc = (bill, amount, bounsRate) => {
   bill.cash.base = Math.round(amount * baseRate);
   bill.cash.binding = Math.round(amount * bindingBonusRate);
   bill.cash.bonus = Math.round(amount * bounsRate);
-
   return bill;
+}
+
+const calculateRebate = (bills, start = 0, end = bills.length) => {
+  const slicedBills = _.slice(bills, start, end);
+  let finalBills = [];
+  let validTotal = 0;
+  let validBonus = 0;
+
+  _.each(slicedBills, bill => {
+    const amount = 0 - bill.amount;
+    let isCashBack = false;
+
+    _.each(rateTable, rate => {
+      if (rate.match.test(bill.detail)) {
+        if (rate.rate !== 0) {
+          validTotal += amount;
+          validBonus += amount;
+          finalBills.push(cashCalc(bill, amount, rate.rate));
+        } else {
+          finalBills.push(cashCalc(bill, 0, 0));
+        }
+        isCashBack = true;
+        return false;
+      }
+    });
+    if (!isCashBack) {
+      validTotal += amount;
+      finalBills.push(cashCalc(bill, amount, 0));
+    }
+  });
+
+  const basicRebate = Math.round(validTotal * baseRate);
+  const bindingRebate = Math.round(validTotal * bindingBonusRate);
+  const bonusRebate = Math.round(validBonus * bonusRate);
+  const totalBonusRebate = bindingRebate + bonusRebate;
+  const totalRebate = basicRebate + (totalBonusRebate > maxBonus ? maxBonus : totalBonusRebate);
+
+  return {
+    basicRebate: basicRebate,
+    bindingRebate: bindingRebate,
+    bonusRebate: bonusRebate,
+    totalRebate: totalRebate,
+    overBounsLimit: (totalBonusRebate > maxBonus),
+    bills: finalBills
+  }
 }
 
 app.use(express.static('public'));
 
-app.post('/upload', multipartMiddleware, (req, res) => {
-  let output = xlsConverter(req.files.xls.path)
+app.post('/converter', multipartMiddleware, (req, res) => {
+  let bills = parseXLS(req.files.xls.path);
 
-  output = recordProcessor(output);
-  res.json(output);
+  bills = processBills(bills);
+  res.json(bills);
 });
 
-// console.log(finalBills);
-// console.log('\n基本回饋：', cashBasic);
-// if (cashBinding + cashBonus >= 500) {
-//   console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
-//   console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
-//   console.log('加碼回饋到達上限，以500計');
-//   console.log('回饋共計：', cashBasic + 500);
-// } else {
-//   console.log('綁定加碼：', cashBinding);
-//   console.log('指定數位：', cashBonus);
-//   console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
-// }
+app.post('/calculate', bodyParser.json(), (req, res) => {
+  const bills = req.body.bills;
+  const billsStart = req.body.start;
+  const billsEnd = req.body.end;
+
+  res.json(calculateRebate(bills, billsStart, billsEnd));
+});
 
 app.listen(9090, () => {
-  console.log('App listening on port 9090!');
-})
+  console.log('App listening on port 9090');
+});
