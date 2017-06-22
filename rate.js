@@ -31,6 +31,11 @@ module.exports = [
     'note': '特殊活動不計算回饋'
   },
   {
+    'item': '高鐵',
+    'match': /^高鐵ＥＣ.*$/,
+    'rate': 0.02
+  },
+  {
     'item': '支付寶（淘寶／天貓）',
     'match': /^ALIPAY\*TAOBAO\.COM.*$/,
     'rate': 0.02
@@ -55,6 +60,11 @@ module.exports = [
   {
     'item': 'Lativ',
     'match': /^米格國際股份有限公司.*$/,
+    'rate': 0.02
+  },
+  {
+    'item': 'UNIQLO 網購',
+    'match': /^台灣優衣庫有限公司ＥＣ.*$/,
     'rate': 0.02
   },
   {
@@ -111,6 +121,11 @@ module.exports = [
   {
     'item': 'Yahoo',
     'match': /^雅虎奇摩.*$/,
+    'rate': 0.02 
+  },
+  {
+    'item': 'Yahoo 輕鬆付',
+    'match': /^雅虎輕鬆付.*$/,
     'rate': 0.02 
   },
   {
