@@ -12,7 +12,7 @@
   <div class="container">
     <div class="row">
       <div class="col-md-8 col-md-offset-2">
-        <form action="/upload">
+        <form>
           <div class="form-group">
             <label>@GoGo明細</label>
             <input name="xls" type="file" class="form-control" accept="application/vnd.ms-excel">
@@ -36,13 +36,20 @@
           <h4>指定通路回饋：{{bonus.bonusRebate}}</h4>
           <h4>綁定扣款加碼：{{bonus.bindingRebate}}</h4>
           <h4>總回饋：{{bonus.totalRebate}}</h4>
-          <div class="timeline-item" v-for="record in records" v-bind:date-is="record.posting_date">
+          <div
+            class="timeline-item"
+            v-for="(record, index) in records"
+            v-bind:date-is="record.posting_date"
+            v-bind:data-index="index"
+            
+          >
             <p>{{record.detail}}</p>
             <p>
               使用 <strong class="card">{{record.card}}</strong> 
               金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
             </p>
             <p>備註： {{record.comment}}</p>
+            <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
           </div>
         </div>
       </div>
@@ -59,14 +66,20 @@
       el: '.timeline',
       data: {
         records: [],
+        selected: [],
         bonus: {}
       },
       updated() {
         $('form').hide(500);
+      },
+      methods: {
+        selectItem(e) {
+          
+        }
       }
     });
 
-    $('form').on('submit', function (e) {
+    $('form').on('submit', e => {
       e.preventDefault();
       axios
       .post('/converter', new FormData($('form')[0]))
@@ -80,6 +93,7 @@
       })
       .then(response => {
         timeline.bonus = response.data;
+        timeline.records = response.data.bills;
       });
     });
   </script>

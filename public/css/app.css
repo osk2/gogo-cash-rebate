@@ -23,7 +23,8 @@ form {
   border-left: 2px solid rgba(0, 0, 0, 0.3);
 }
 .timeline-item:hover {
-  background-color: #f9f9f9;
+  background-color: #eee;
+  cursor: pointer;
 }
 .timeline-item::before {
   content: attr(date-is);
@@ -56,6 +57,9 @@ form {
   -o-border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
+}
+.timeline-item.selected {
+  background-color: #f9f9f9;
 }
 .amount.red {
   color: #bc5f46;

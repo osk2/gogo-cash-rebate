@@ -15,7 +15,7 @@ module.exports = {
   },
   getBonusLimit() {
     return this._bonusLimit;
-  }
+  },
   getBindingBonusRate() {
     return this.getBindingStatus() ? this._bindingBonusRate : 0;
   }
