@@ -1,4 +1,4 @@
-# gogo-cash-back
+# gogo-cash-rebate
 
 Cash rebate calculator for Taishin @GoGo
 
