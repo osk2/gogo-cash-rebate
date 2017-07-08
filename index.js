@@ -2,6 +2,7 @@ const XLSX = require('xlsx');
 const _ = require('lodash');
 const fs = require('fs');
 const chalk = require('chalk');
+const https = require('https');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -9,6 +10,11 @@ const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 const rateTable = require('./rate');
 const config = require('./config');
+const sslOptions = {
+  ca: fs.readFileSync(config.ca),
+  key: fs.readFileSync(config.key),
+  cert: fs.readFileSync(config.cert)
+};
 
 const baseRate = config.getBaseRate();
 const bonusRate = config.getBonusRate();
@@ -163,6 +169,6 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
   });
 });
 
-app.listen(9090, () => {
+https.createServer(sslOptions, app).listen(9090, () => {
   console.log('App listening on port 9090');
 });

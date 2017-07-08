@@ -4,6 +4,9 @@ module.exports = {
   _bindingBonusRate: 0.01,
   _bonusLimit: 500,
   _isBinding: true,
+  ca: 'ssl/fullchain.pem',
+  key: 'ssl/privkey.pem',
+  cert: 'ssl/cert.pem',
   getBaseRate() {
     return this._baseRate;
   },
