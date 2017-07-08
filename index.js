@@ -1,5 +1,6 @@
 const XLSX = require('xlsx');
 const _ = require('lodash');
+const fs = require('fs');
 const chalk = require('chalk');
 const express = require('express');
 const app = express();
@@ -125,6 +126,41 @@ app.post('/calculate', bodyParser.json(), (req, res) => {
   const billsEnd = req.body.end;
 
   res.json(calculateRebate(bills, billsStart, billsEnd));
+});
+
+app.post('/feedback', multipartMiddleware, (req, res) => {
+  let currentFeedback;
+
+  if (Object.keys(req.body).length === 0) {
+    res.status(500).send('Empty request.');
+    return;
+  }
+  fs.readFile('./feedback.json', (err, data) => {
+    if (err) {
+      res.status(500).send('Error occurred while open file.');
+      return;
+    }
+    currentFeedback = JSON.parse(data);
+    currentFeedback.push({
+      name: req.body['input-name'],
+      email: req.body['input-email'],
+      item: req.body['input-store'],
+      detail: req.body['input-detail'],
+      match: req.body['input-match'],
+      rate: req.body['input-rate'],
+      comment: req.body['input-comment']
+    });
+    currentFeedback = JSON.stringify(currentFeedback, null, 2);
+    fs.writeFile('./feedback.json', currentFeedback, err => {
+      if (err) {
+        res.status(500).send('Error occurred while write file.');
+        return;
+      }
+      res.json({
+        success: true
+      });
+    });
+  });
 });
 
 app.listen(9090, () => {
