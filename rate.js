@@ -41,6 +41,12 @@ module.exports = [
     'rate': 0.02
   },
   {
+    'item': '支付寶（淘寶／天貓）',
+    'match': /www\.taobao\.com/,
+    'rate': 0.02,
+    'contributor': 'AIC'
+  },
+  {
     'item': '蝦皮拍賣',
     'match': /^蝦皮拍賣.*$/,
     'rate': 0.02
@@ -133,5 +139,11 @@ module.exports = [
     'match': /^ＤＥＣＡＴＨＬＯＮ.*$/,
     'rate': 0.02,
     'note': '若於實體店面使用 Apple Pay 等支付有機會列入數位通路'
+  },
+  {
+    'item': 'iherb',
+    'match': /^iHerb.*$/,
+    'rate': 0.02,
+    'contributor': 'AIC'
   }
 ]
