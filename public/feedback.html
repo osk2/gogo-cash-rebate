@@ -73,12 +73,23 @@
   <script src="components/axios/dist/axios.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js" integrity="sha256-xofl41Tt0WRg2Q0LrntvSB6qv1Mzz/ZLvSyi+O08d1g=" crossorigin="anonymous"></script>
   <script>
+    !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
+    (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
+    var e=o.scripts[0];O.src='//www.google-analytics.com/analytics.js';
+    e.parentNode.insertBefore(O,e)}(window,document,'gogo');
+
+    gogo('create', 'UA-69159377-5', 'auto');
+    gogo('send', 'pageview');
+  </script>
+  <script>
     $('form').on('submit', function (e) {
       e.preventDefault();
+      gogo('send', 'event', 'Feedback', 'submit');
       axios
       .post('/feedback', new FormData($('form')[0]))
       .then(response => {
         if (response.data.success) {
+          gogo('send', 'event', 'Feedback', 'success');
           swal(
             '好棒棒！',
             '剛剛送出的資料正在審核中，感謝你！',
@@ -89,6 +100,7 @@
         }
       })
       .catch((err) => {
+        gogo('send', 'event', 'Feedback', 'error');
         swal(
           '糟糕！',
           '好像發生了一點問題，請聯絡osk2修復問題',

@@ -62,6 +62,15 @@
   <script src="components/moment/min/moment.min.js"></script>
   <script src="components/lodash/dist/lodash.min.js"></script>
   <script>
+    !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
+    (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
+    var e=o.scripts[0];O.src='//www.google-analytics.com/analytics.js';
+    e.parentNode.insertBefore(O,e)}(window,document,'gogo');
+
+    gogo('create', 'UA-69159377-5', 'auto');
+    gogo('send', 'pageview');
+  </script>
+  <script>
     const timeline = new Vue({
       el: '.timeline',
       data: {
