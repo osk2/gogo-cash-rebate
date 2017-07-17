@@ -36,6 +36,11 @@ module.exports = [
     'rate': 0.02
   },
   {
+    'item': '台鐵',
+    'match': /^ｒａｉｌｗａｙTAIPEI\/TW$/,
+    'rate': 0.02
+  },
+  {
     'item': '支付寶（淘寶／天貓）',
     'match': /^ALIPAY\*TAOBAO\.COM.*$/,
     'rate': 0.02
@@ -96,7 +101,7 @@ module.exports = [
   },
   {
     'item': 'Google Wallet',
-    'match': /^GOOGLE \*.*$/,
+    'match': /^GOOGLE ?\*.*$/,
     'rate': 0.02
   },
   {
@@ -122,6 +127,11 @@ module.exports = [
   { 
     'item': 'iTunes', 
     'match': /^ITUNES\.COM\/BILL.*$/, 
+    'rate': 0.02
+  },
+  {
+    'item': 'STEAM',
+    'match': /WWW\.STEAMPOWERED\.COM.*$/,
     'rate': 0.02
   },
   {
