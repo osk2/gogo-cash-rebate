@@ -20,11 +20,21 @@ bower install
 
 ## Usage
 
+### Production Mode
+
+```shell
+NODE_ENV=production node .
+```
+
+### Development Mode
+
+In order to develop locally, this mode will run without SSL
+
 ```shell
 node .
 ```
 
-App will listen on port 9090
+App will listen on port 9090 by default
 
 ## License
 
