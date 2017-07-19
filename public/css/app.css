@@ -1,0 +1,75 @@
+html,
+body {
+  height: 100%;
+}
+p {
+  font-size: 1em;
+}
+form {
+  margin: 1em 0;
+}
+
+/* TIMELINE */
+
+.timeline {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.timeline-item {
+  padding: 3em 2em 1em;
+  position: relative;
+  color: rgba(0, 0, 0, 0.7);
+  border-left: 2px solid rgba(0, 0, 0, 0.3);
+}
+.timeline-item:hover {
+  background-color: #eee;
+  cursor: pointer;
+}
+.timeline-item::before {
+  content: attr(date-is);
+  position: absolute;
+  left: 1.5em;
+  font-weight: bold;
+  top: .5em;
+  display: block;
+  font-size: 1.2em;
+}
+.timeline-item::after {
+  width: 10px;
+  height: 10px;
+  display: block;
+  top: 1em;
+  position: absolute;
+  left: -7px;
+  border-radius: 10px;
+  content: '';
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  background: white;
+}
+.timeline-item:first-child {
+  -o-border-image: linear-gradient(to top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
+     border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
+     border-image: linear-gradient(to top, rgba(0, 0, 0, 0.3) 70%, transparent) 1 100%;
+}
+.timeline-item:last-child {
+  height: 100%;
+  -o-border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
+     border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
+     border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
+}
+.timeline-item.selected {
+  background-color: #f9f9f9;
+}
+.amount.red {
+  color: #bc5f46;
+}
+.amount.green {
+  color: #27ae60;
+}
+
+/* VUE */
+
+[v-cloak] {
+  display: none;
+}

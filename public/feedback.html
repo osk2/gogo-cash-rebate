@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@GoGo Rebate Calculator</title>
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" integrity="sha256-fmdDIg1KI3wbdH0gfFQGXexodQ3SQzBTHDGicLAgje8=" crossorigin="anonymous" />
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <p>&nbsp;</p>
+        <form>
+          <div class="form-group">
+            <label>名字 / ID</label>
+            <input type="text" class="form-control" name="input-name" placeholder="之後會被紀錄在貢獻名單">
+            <p class="text-info">*非必填</p>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-control" name="input-email" placeholder="之後更新會考慮發信通知">
+            <p class="text-info">*非必填</p>
+          </div>
+          <div class="form-group">
+            <label>通路名稱</label>
+            <input type="text" class="form-control" name="input-store" placeholder="如：蝦皮拍賣" required>
+          </div>
+          <div class="form-group">
+            <label>消費明細</label>
+            <input type="text" class="form-control" name="input-detail" placeholder="如：蝦皮拍賣 TAIPEI/TW" required>
+            <br>
+            <p>
+              <img src="//i.imgur.com/EvJ7D4s.png" class="img-thumbnail" alt="消費明細">
+              <br>
+              <span>請從報表中複製完整的消費明細字串，如上圖所示</span>
+            </p>
+          </div>
+          <div class="form-group">
+            <label>正規表示式 / Regex</label>
+            <input type="text" class="form-control" input="input-match" placeholder="如：/^蝦皮拍賣.*$/">
+            <p>
+              <span class="text-info">*非必填</span>  
+              <br>
+              熟悉程式者可以幫我填，此項會用來搜尋上面的消費明細字串
+              <br>
+              請特別注意全形英文不需轉換為半形
+            </p>
+          </div>
+           <div class="form-group">
+            <label>回饋方式</label>
+            <select name="input-rate" class="form-control">
+              <option value="0.02">指定通路加碼</option>
+              <option value="0">完全無回饋</option>
+            </select>
+            <p>除了上述兩個狀況以外都會被計入一般回饋，不需特別回報</p>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputPassword1">其他建議/回饋</label>
+            <textarea name="input-comment" class="form-control"></textarea>
+            <p class="text-info">*非必填</p>
+          </div>
+          <button type="submit" class="btn btn-info">送出</button>
+        </form>
+        <p>&nbsp;</p>
+      </div>
+    </div>
+  </div>
+  <script src="components/jquery/dist/jquery.min.js"></script>
+  <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="components/axios/dist/axios.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js" integrity="sha256-xofl41Tt0WRg2Q0LrntvSB6qv1Mzz/ZLvSyi+O08d1g=" crossorigin="anonymous"></script>
+  <script>
+    !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
+    (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
+    var e=o.scripts[0];O.src='//www.google-analytics.com/analytics.js';
+    e.parentNode.insertBefore(O,e)}(window,document,'gogo');
+
+    gogo('create', 'UA-69159377-5', 'auto');
+    gogo('send', 'pageview');
+  </script>
+  <script>
+    $('form').on('submit', function (e) {
+      e.preventDefault();
+      gogo('send', 'event', 'Feedback', 'submit');
+      axios
+      .post('/feedback', new FormData($('form')[0]))
+      .then(response => {
+        if (response.data.success) {
+          gogo('send', 'event', 'Feedback', 'success');
+          swal(
+            '好棒棒！',
+            '剛剛送出的資料正在審核中，感謝你！',
+            'success'
+          );
+        } else {
+          throw new Error();
+        }
+      })
+      .catch((err) => {
+        gogo('send', 'event', 'Feedback', 'error');
+        swal(
+          '糟糕！',
+          '好像發生了一點問題，請聯絡osk2修復問題',
+          'error'
+        )
+      })
+    });
+  </script>
+</body>
+<body>

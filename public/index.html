@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>@GoGo Rebate Calculator</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2">
+        <form>
+          <div class="form-group">
+            <label>@GoGo明細</label>
+            <input name="xls" type="file" class="form-control" accept="application/vnd.ms-excel">
+            <p class="help-block">匯入 Richart 消費明細</p>
+          </div>
+          <div class="form-group">
+            <label>起始</label>
+            <input name="start" type="number" class="form-control" value="0">
+          </div>
+          <div class="form-group">
+            <label>結束</label>
+            <input name="end" type="number" class="form-control" value="23">
+          </div>
+          <button type="submit" class="btn btn-primary">分析</button>
+        </form>
+      </div>
+  
+      <div class="col-md-8 col-md-offset-2">
+        <div class="timeline" v-cloak>
+          <h4>基本回饋：{{bonus.basicRebate}}</h4>
+          <h4>指定通路回饋：{{bonus.bonusRebate}}</h4>
+          <h4>綁定扣款加碼：{{bonus.bindingRebate}}</h4>
+          <h4>總回饋：{{bonus.totalRebate}}</h4>
+          <div
+            class="timeline-item"
+            v-for="(record, index) in records"
+            v-bind:date-is="record.posting_date"
+            v-bind:data-index="index"
+            
+          >
+            <p>{{record.detail}}</p>
+            <p>
+              使用 <strong class="card">{{record.card}}</strong> 
+              金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
+            </p>
+            <p>備註： {{record.comment}}</p>
+            <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="components/jquery/dist/jquery.min.js"></script>
+  <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="components/axios/dist/axios.min.js"></script>
+  <script src="components/vue/dist/vue.min.js"></script>
+  <script src="components/moment/min/moment.min.js"></script>
+  <script src="components/lodash/dist/lodash.min.js"></script>
+  <script>
+    !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
+    (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
+    var e=o.scripts[0];O.src='//www.google-analytics.com/analytics.js';
+    e.parentNode.insertBefore(O,e)}(window,document,'gogo');
+
+    gogo('create', 'UA-69159377-5', 'auto');
+    gogo('send', 'pageview');
+  </script>
+  <script>
+    const timeline = new Vue({
+      el: '.timeline',
+      data: {
+        records: [],
+        selected: [],
+        bonus: {}
+      },
+      updated() {
+        $('form').hide(500);
+      },
+      methods: {
+        selectItem(e) {
+          
+        }
+      }
+    });
+
+    $('form').on('submit', e => {
+      e.preventDefault();
+      axios
+      .post('/converter', new FormData($('form')[0]))
+      .then(response => {
+        const bills = _.reverse(_.sortBy(response.data, ['posting_date']));
+        const start = parseInt($('input[name="start"]').val());
+        const end = parseInt($('input[name="end"]').val());
+
+        timeline.records = bills;
+        return axios.post('/calculate', {bills: bills, start: start, end: end});
+      })
+      .then(response => {
+        timeline.bonus = response.data;
+        timeline.records = response.data.bills;
+      });
+    });
+  </script>
+</body>
+</html>

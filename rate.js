@@ -36,6 +36,11 @@ module.exports = [
     'rate': 0.02
   },
   {
+    'item': '高鐵app',
+    'match': /^高鐵智慧型手機.*$/,
+    'rate': 0.02
+  },
+  {
     'item': '台鐵',
     'match': /^ｒａｉｌｗａｙTAIPEI\/TW$/,
     'rate': 0.02

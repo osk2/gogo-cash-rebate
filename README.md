@@ -12,21 +12,23 @@ This project is under active development, check [dev](https://github.com/osk2/go
 
 Make sure you have [yarn](https://yarnpkg.com/) installed
 
-```
+```shell
 yarn
+```
+
+and 
+
+```shell
+bower install
 ```
 
 ## Usage
 
-`node . <filename> <number_of_record>`
-
-e.g.
-
-```
-node . Richart_transaction_20170513.xls 10
+```shell
+node .
 ```
 
-will calculate total cash reabte of latest 10 records of bill.
+App will listen on port 9090
 
 ## License
 

@@ -1,0 +1,25 @@
+{
+  "name": "gogo-cash-back",
+  "description": "Cash rebate calculator for Richart @GoGo",
+  "main": "index.js",
+  "authors": [
+    "osk2"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/osk2/gogo-cash-back",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "vue": "^2.3.4",
+    "bootstrap": "^3.3.7",
+    "axios": "^0.16.2",
+    "lodash": "^4.17.4",
+    "moment": "^2.18.1"
+  }
+}

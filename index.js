@@ -1,53 +1,88 @@
 const XLSX = require('xlsx');
 const _ = require('lodash');
+const fs = require('fs');
 const chalk = require('chalk');
+const https = require('https');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const multipart = require('connect-multiparty');
+const multipartMiddleware = multipart();
 const rateTable = require('./rate');
+const config = require('./config');
+const sslOptions = {
+  ca: fs.readFileSync(config.ca),
+  key: fs.readFileSync(config.key),
+  cert: fs.readFileSync(config.cert)
+};
 
-const args = process.argv;
-const workbook = XLSX.readFile(args[2]);
-const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-const wsjson = XLSX.utils.sheet_to_json(worksheet, {
-  header: 
-  [
-  'shop_date',
-  'pay_date',
-  'card',
-  'amount',
-  'detail',
-  'currency',
-  'category',
-  'comment'
-  ]
-});
-const baseRate = 0.005;
-const isBinding = true;
-const bindingBonusRate = isBinding ? 0.01 : 0;
-let bills = _.drop(wsjson, 1);
-let finalBills = [];
-let validTotal = 0;
-let validBonus = 0;
+const baseRate = config.getBaseRate();
+const bonusRate = config.getBonusRate();
+const bindingBonusRate = config.getBindingBonusRate();
+const maxBonus = config.getBonusLimit();
 
-const cashCalc = function (bill, amount, bounsRate) {
+const parseXLS = path=> {
+  try {
+    const workbook = XLSX.readFile(path);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const wsjson = XLSX.utils.sheet_to_json(worksheet, {
+      header: [
+        'transaction_date',
+        'posting_date',
+        'card',
+        'amount',
+        'detail',
+        'currency',
+        'category',
+        'comment'
+      ]
+    });
+    let bills = _.drop(wsjson, 1);
+
+    bills.success = true;
+    return bills;
+  } catch (ex) {
+    return {success: false, reason: ex};
+  }
+}
+
+const convertCurrency = bills => {
+  return _.map(bills, bill => {
+    bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
+    return bill;
+  });
+}
+
+const sortByPostingDate = bills => {
+  return _.sortBy(bills, ['posting_date']);
+}
+
+const processBills = bills => {
+  let processedBills = bills;
+
+  processedBills = convertCurrency(processedBills);
+  return sortByPostingDate(processedBills);
+}
+
+const cashCalc = (bill, amount, bounsRate) => {
   bill.cash = {};
   bill.cash.base = Math.round(amount * baseRate);
   bill.cash.binding = Math.round(amount * bindingBonusRate);
   bill.cash.bonus = Math.round(amount * bounsRate);
-
   return bill;
 }
 
-_.map(bills, function (bill) {
-  bill.amount = parseInt(bill.amount.replace('NT$', '').replace(',', ''));
-  return bill;
-});
+const calculateRebate = (bills, start = 0, end = bills.length) => {
+  const slicedBills = _.slice(bills, start, end);
+  let finalBills = [];
+  let validTotal = 0;
+  let validBonus = 0;
 
-_.each(_.take(bills, (args[3]) - 1), function (bill) {
-
-  if (bill.amount < 0) {
+  _.each(slicedBills, bill => {
+    const amount = 0 - bill.amount;
     let isCashBack = false;
-    let amount = Math.abs(bill.amount);
 
-    _.each(rateTable, function (rate) {
+    _.each(rateTable, rate => {
       if (rate.match.test(bill.detail)) {
         if (rate.rate !== 0) {
           validTotal += amount;
@@ -64,24 +99,76 @@ _.each(_.take(bills, (args[3]) - 1), function (bill) {
       validTotal += amount;
       finalBills.push(cashCalc(bill, amount, 0));
     }
-  } else {
-    finalBills.push(cashCalc(bill, 0, 0));
+  });
+
+  const basicRebate = Math.round(validTotal * baseRate);
+  const bindingRebate = Math.round(validTotal * bindingBonusRate);
+  const bonusRebate = Math.round(validBonus * bonusRate);
+  const totalBonusRebate = bindingRebate + bonusRebate;
+  const totalRebate = basicRebate + (totalBonusRebate > maxBonus ? maxBonus : totalBonusRebate);
+
+  return {
+    basicRebate: basicRebate,
+    bindingRebate: bindingRebate,
+    bonusRebate: bonusRebate,
+    totalRebate: totalRebate,
+    overBounsLimit: (totalBonusRebate > maxBonus),
+    bills: finalBills
   }
+}
+
+app.use(express.static('public'));
+
+app.post('/converter', multipartMiddleware, (req, res) => {
+  let bills = parseXLS(req.files.xls.path);
+
+  bills = processBills(bills);
+  res.json(bills);
 });
 
-const cashBasic = Math.round(validTotal * baseRate);
-const cashBinding = Math.round(validTotal * bindingBonusRate);
-const cashBonus = Math.round(validBonus * 0.02);
+app.post('/calculate', bodyParser.json(), (req, res) => {
+  const bills = req.body.bills;
+  const billsStart = req.body.start;
+  const billsEnd = req.body.end;
 
-console.log(finalBills);
-console.log('\n基本回饋：', cashBasic);
-if (cashBinding + cashBonus >= 500) {
-  console.log(chalk.dim.strikethrough('\n綁定加碼：', cashBinding));
-  console.log(chalk.dim.strikethrough('指定數位：', cashBonus));
-  console.log('加碼回饋到達上限，以500計');
-  console.log('回饋共計：', cashBasic + 500);
-} else {
-  console.log('綁定加碼：', cashBinding);
-  console.log('指定數位：', cashBonus);
-  console.log('回饋共計：', cashBasic + cashBonus + cashBinding);
-}
+  res.json(calculateRebate(bills, billsStart, billsEnd));
+});
+
+app.post('/feedback', multipartMiddleware, (req, res) => {
+  let currentFeedback;
+
+  if (Object.keys(req.body).length === 0) {
+    res.status(500).send('Empty request.');
+    return;
+  }
+  fs.readFile('./feedback.json', (err, data) => {
+    if (err) {
+      res.status(500).send('Error occurred while open file.');
+      return;
+    }
+    currentFeedback = JSON.parse(data);
+    currentFeedback.push({
+      name: req.body['input-name'],
+      email: req.body['input-email'],
+      item: req.body['input-store'],
+      detail: req.body['input-detail'],
+      match: req.body['input-match'],
+      rate: req.body['input-rate'],
+      comment: req.body['input-comment']
+    });
+    currentFeedback = JSON.stringify(currentFeedback, null, 2);
+    fs.writeFile('./feedback.json', currentFeedback, err => {
+      if (err) {
+        res.status(500).send('Error occurred while write file.');
+        return;
+      }
+      res.json({
+        success: true
+      });
+    });
+  });
+});
+
+https.createServer(sslOptions, app).listen(9090, () => {
+  console.log('App listening on port 9090');
+});
