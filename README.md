@@ -4,10 +4,6 @@ Cash rebate calculator for Taishin @GoGo
 
 > 台新 @GoGo 現金回饋計算機
 
-## Status
-
-This project is under active development, check [dev](https://github.com/osk2/gogo-cash-rebate/tree/dev) for more information
-
 ## Installation
 
 Make sure you have [yarn](https://yarnpkg.com/) installed
