@@ -170,11 +170,11 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
 });
 
 if (isProduction) {
-  http.createServer(sslOptions, app).listen(9090, () => {
-    console.log('App listening on port 9090');
+  http.createServer(sslOptions, app).listen(config.port, () => {
+    console.log('App listening on port', config.port);
   });
 } else {
-  http.createServer(app).listen(9090, () => {
-    console.log('App listening on port 9090');
+  http.createServer(app).listen(config.port, () => {
+    console.log('App listening on port', config.port);
   });
 }

@@ -4,6 +4,7 @@ module.exports = {
   _bindingBonusRate: 0.01,
   _bonusLimit: 500,
   _isBinding: true,
+  port: 9090,
   ca: 'ssl/fullchain.pem',
   key: 'ssl/privkey.pem',
   cert: 'ssl/cert.pem',
