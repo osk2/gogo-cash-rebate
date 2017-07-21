@@ -9,10 +9,33 @@
   <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
-  <div class="container">
+  <div class="container app">
     <div class="row">
-      <div class="col-md-8 col-md-offset-2">
-        <form>
+      <div class="col-md-6 status-pane">
+        <div class="row" v-if="stage === 'result'">
+          <div class="col-xs-6">
+            <span>基本回饋</span>
+            <h2>{{bonus.basicRebate}}</h2>
+          </div>
+          <div class="col-xs-6">
+            <span>指定通路回饋</span>
+            <h2>{{bonus.bonusRebate}}</h2>
+          </div>
+          <div class="col-xs-6">
+            <span>綁定扣款加碼</span>
+            <h2>{{bonus.bindingRebate}}</h2>
+          </div>
+          <div class="col-xs-6">
+            <span>總回饋</span>
+            <h2>{{bonus.totalRebate}}</h2>
+          </div>
+        </div>
+        <div class="row" v-if="stage === 'calculate'">
+          <div class="col-md-12">
+            <p>計算 <strong>2017/06/12</strong> ~ <strong>2017/07/12</strong> 間 <strong>25</strong> 筆消費紀錄的回饋金額</p>
+          </div>
+        </div>
+        <form v-on:submit="upload" v-if="stage === 'upload'">
           <div class="form-group">
             <label>@GoGo明細</label>
             <input name="xls" type="file" class="form-control" accept="application/vnd.ms-excel">
@@ -29,27 +52,25 @@
           <button type="submit" class="btn btn-primary">分析</button>
         </form>
       </div>
-  
-      <div class="col-md-8 col-md-offset-2">
-        <div class="timeline" v-cloak>
-          <h4>基本回饋：{{bonus.basicRebate}}</h4>
-          <h4>指定通路回饋：{{bonus.bonusRebate}}</h4>
-          <h4>綁定扣款加碼：{{bonus.bindingRebate}}</h4>
-          <h4>總回饋：{{bonus.totalRebate}}</h4>
+      <div class="col-md-6">
+        <div class="image-wrapper hidden-sm hidden-xs" v-if="stage !== 'result'">
+          <img src="img/standby.png">
+        </div>
+        <div class="timeline" v-show="records.length" v-cloak>
           <div
             class="timeline-item"
             v-for="(record, index) in records"
             v-bind:date-is="record.posting_date"
             v-bind:data-index="index"
-            
           >
             <p>{{record.detail}}</p>
             <p>
-              使用 <strong class="card">{{record.card}}</strong> 
               金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
             </p>
             <p>備註： {{record.comment}}</p>
-            <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
+            <div v-if="record.cash">
+              <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
+            </div>
           </div>
         </div>
       </div>
@@ -72,8 +93,9 @@
   </script>
   <script>
     const timeline = new Vue({
-      el: '.timeline',
+      el: '.app',
       data: {
+        stage: 'upload',
         records: [],
         selected: [],
         bonus: {}
@@ -82,28 +104,27 @@
         $('form').hide(500);
       },
       methods: {
-        selectItem(e) {
-          
+        upload(e) {
+          gogo('send', 'event', 'Calculation', 'submit');
+          e.preventDefault();
+          axios
+          .post('/converter', new FormData($('form')[0]))
+          .then(response => {
+            const bills = _.reverse(_.sortBy(response.data, ['posting_date']));
+            const start = parseInt($('input[name="start"]').val());
+            const end = parseInt($('input[name="end"]').val());
+
+            timeline.stage = 'calculate';
+            timeline.records = bills;
+            return axios.post('/calculate', {bills: bills, start: start, end: end});
+          })
+          .then(response => {
+            timeline.stage = 'result';
+            timeline.bonus = response.data;
+            timeline.records = response.data.bills;
+          });
         }
       }
-    });
-
-    $('form').on('submit', e => {
-      e.preventDefault();
-      axios
-      .post('/converter', new FormData($('form')[0]))
-      .then(response => {
-        const bills = _.reverse(_.sortBy(response.data, ['posting_date']));
-        const start = parseInt($('input[name="start"]').val());
-        const end = parseInt($('input[name="end"]').val());
-
-        timeline.records = bills;
-        return axios.post('/calculate', {bills: bills, start: start, end: end});
-      })
-      .then(response => {
-        timeline.bonus = response.data;
-        timeline.records = response.data.bills;
-      });
     });
   </script>
 </body>
