@@ -14,7 +14,6 @@ const bonusRate = config.getBonusRate();
 const bindingBonusRate = config.getBindingBonusRate();
 const maxBonus = config.getBonusLimit();
 const isProduction = (process.env.NODE_ENV === 'production');
-const http = isProduction ? require('https') : require('http');
 const sslOptions = {
   ca: isProduction ? fs.readFileSync(config.ca) : '',
   key: isProduction ? fs.readFileSync(config.key) : '',
@@ -170,10 +169,14 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
 });
 
 if (isProduction) {
-  http.createServer(sslOptions, app).listen(config.port, () => {
+  const https = require('https');
+
+  https.createServer(sslOptions, app).listen(config.port, () => {
     console.log('App listening on port', config.port);
   });
 } else {
+  const http = require('http');
+
   http.createServer(app).listen(config.port, () => {
     console.log('App listening on port', config.port);
   });

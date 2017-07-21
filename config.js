@@ -14,13 +14,10 @@ module.exports = {
   getBonusRate() {
     return this._bonusRate;
   },
-  getBindingStatus() {
-    return this._isBinding;
-  },
   getBonusLimit() {
     return this._bonusLimit;
   },
   getBindingBonusRate() {
-    return this.getBindingStatus() ? this._bindingBonusRate : 0;
+    return this._isBinding ? this._bindingBonusRate : 0;
   }
 }
