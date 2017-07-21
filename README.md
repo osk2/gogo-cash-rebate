@@ -4,6 +4,10 @@ Cash rebate calculator for Taishin @GoGo
 
 > 台新 @GoGo 現金回饋計算機
 
+## Demo
+
+[https://osk2.me:9090](https://osk2.me:9090)
+
 ## Installation
 
 Make sure you have [yarn](https://yarnpkg.com/) installed
