@@ -76,12 +76,12 @@ form {
 
 /* MISC */
 
-.value-pane {
+.value-panel {
   margin-top: 1em;
 }
 
 @media (min-width: 992px) {
-  .col-md-6.value-pane {
+  .col-md-6.value-panel {
     position: fixed;
     left: 50%;
   }
