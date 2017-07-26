@@ -24,7 +24,8 @@
           <div class="col-xs-6">
             <div class="panel panel-default">
               <div class="panel-body">
-                指定通路回饋
+                指定通路回饋 
+                <i class="glyphicon glyphicon-question-sign popover-specific"></i>
                 <h1>{{bonus.bonusRebate}}</h1>
               </div>
             </div>
@@ -41,6 +42,7 @@
             <div class="panel panel-default">
               <div class="panel-body">
                 總回饋
+                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="包含綁定扣款加碼"></i>
                 <h1>{{bonus.totalRebate}}</h1>
               </div>
             </div>
@@ -118,6 +120,18 @@
       },
       updated() {
         $('form').hide(500);
+        $('.popover-specific').popover({
+          title: '回饋少了嗎？',
+          placement: 'bottom',
+          html: true,
+          content: '<p>下列情況可能導致回饋金額與實際不符</p>' +
+            '<ol>' +
+              '<li>該通路尚未被收錄於本系統，請協助<a href="feedback.html" target="_blank">回報</a></li>' +
+              '<li>接近結帳日的回饋可能遲至次月發放，請洽詢台新客服</li>' +
+              '<li>指定的計算區間有誤，請檢查左側紀錄是否正確</li>' +
+            '</ol>'
+        });
+        $('[data-toggle="tooltip"]').tooltip();
       },
       methods: {
         upload(e) {
