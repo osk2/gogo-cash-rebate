@@ -9,6 +9,14 @@
   <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
 </head>
 <body>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=1547299012233601";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
   <div class="container app">
     <div class="row">
       <div class="col-md-6 value-panel">
@@ -69,6 +77,7 @@
           </div>
           <button type="submit" class="btn btn-primary">分析</button>
         </form>
+        <div class="fb-like" data-href="https://osk2.me:9090" data-layout="standard" data-action="like"data-show-faces="true" data-share="true" style="margin: 1em 0"></div>
       </div>
       <div class="col-md-6 result-panel">
         <div class="image-wrapper hidden-sm hidden-xs" v-if="stage !== 'result'">
