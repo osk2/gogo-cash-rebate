@@ -73,3 +73,30 @@ form {
 [v-cloak] {
   display: none;
 }
+
+/* MISC */
+
+@media (min-width: 992px) {
+  .col-md-6.status-pane {
+    position: fixed;
+    left: 50%;
+  }
+}
+.card {
+  vertical-align: baseline;
+  border-radius: 4px;
+}
+.card:before {
+  content: '----';
+  opacity: 0;
+}
+.card.black {
+  background-color: #999;
+}
+.card.purple {
+  background-color: #a1b;
+}
+.image-wrapper {
+  margin: 3em;
+  text-align: right;
+}

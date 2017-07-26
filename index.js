@@ -2,7 +2,6 @@ const XLSX = require('xlsx');
 const _ = require('lodash');
 const fs = require('fs');
 const chalk = require('chalk');
-const https = require('https');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
@@ -10,16 +9,16 @@ const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
 const rateTable = require('./rate');
 const config = require('./config');
-const sslOptions = {
-  ca: fs.readFileSync(config.ca),
-  key: fs.readFileSync(config.key),
-  cert: fs.readFileSync(config.cert)
-};
-
 const baseRate = config.getBaseRate();
 const bonusRate = config.getBonusRate();
 const bindingBonusRate = config.getBindingBonusRate();
 const maxBonus = config.getBonusLimit();
+const isProduction = (process.env.NODE_ENV === 'production');
+const sslOptions = {
+  ca: isProduction ? fs.readFileSync(config.ca) : '',
+  key: isProduction ? fs.readFileSync(config.key) : '',
+  cert: isProduction ? fs.readFileSync(config.cert) : ''
+};
 
 const parseXLS = path=> {
   try {
@@ -169,6 +168,16 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
   });
 });
 
-https.createServer(sslOptions, app).listen(9090, () => {
-  console.log('App listening on port 9090');
-});
+if (isProduction) {
+  const https = require('https');
+
+  https.createServer(sslOptions, app).listen(config.port, () => {
+    console.log('App listening on port', config.port);
+  });
+} else {
+  const http = require('http');
+
+  http.createServer(app).listen(config.port, () => {
+    console.log('App listening on port', config.port);
+  });
+}

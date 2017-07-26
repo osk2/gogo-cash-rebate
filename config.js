@@ -4,6 +4,7 @@ module.exports = {
   _bindingBonusRate: 0.01,
   _bonusLimit: 500,
   _isBinding: true,
+  port: 9090,
   ca: 'ssl/fullchain.pem',
   key: 'ssl/privkey.pem',
   cert: 'ssl/cert.pem',
@@ -13,13 +14,10 @@ module.exports = {
   getBonusRate() {
     return this._bonusRate;
   },
-  getBindingStatus() {
-    return this._isBinding;
-  },
   getBonusLimit() {
     return this._bonusLimit;
   },
   getBindingBonusRate() {
-    return this.getBindingStatus() ? this._bindingBonusRate : 0;
+    return this._isBinding ? this._bindingBonusRate : 0;
   }
 }
