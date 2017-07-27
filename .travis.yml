@@ -10,6 +10,7 @@ install:
   - bower install
 before_script:
   - npm install -g yarn
+  - npm install -g bower
 script:
   - yarn run test
   - yarn run posttest
