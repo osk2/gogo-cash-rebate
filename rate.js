@@ -177,5 +177,11 @@ module.exports = [
     match: /^iHerb.*$/,
     rate: 0.02,
     contributor: 'AIC'
+  },
+  {
+    item: '樂天市場',
+    match: /^樂天市場＊.*$/,
+    rate: 0.02,
+    contributor: 'leona83525'
   }
 ]
