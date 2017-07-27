@@ -1,0 +1,42 @@
+[
+  {
+    "transaction_date": "2017/07/11",
+    "posting_date": "2017/07/13",
+    "card": "@GoGo iCash聯名卡",
+    "amount": -23,
+    "detail": "街口﹣統一超商TAIPEI/TW",
+    "currency": "-",
+    "category": "其他",
+    "comment": "-"
+  },
+  {
+    "transaction_date": "2017/07/12",
+    "posting_date": "2017/07/12",
+    "card": "@GoGo iCash聯名卡",
+    "amount": 21,
+    "detail": "活動類蝦皮回饋",
+    "currency": "-",
+    "category": "其他",
+    "comment": "-"
+  },
+  {
+    "transaction_date": "2017/07/12",
+    "posting_date": "2017/07/13",
+    "card": "@GoGo iCash聯名卡",
+    "amount": -124,
+    "detail": "街口﹣台灣大車隊TAIPEI/TW",
+    "currency": "-",
+    "category": "其他",
+    "comment": "-"
+  },
+  {
+    "transaction_date": "2017/07/09",
+    "posting_date": "2017/07/10",
+    "card": "@GoGo iCash聯名卡",
+    "amount": -1684,
+    "detail": "大潤發台南店G3510TAINAN/TW",
+    "currency": "-",
+    "category": "其他",
+    "comment": "-"
+  }
+]
