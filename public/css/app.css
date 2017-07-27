@@ -86,7 +86,12 @@ form {
     left: 50%;
   }
 }
+
 .image-wrapper {
   margin: 3em;
+  text-align: right;
+}
+
+.copyright-text {
   text-align: right;
 }
