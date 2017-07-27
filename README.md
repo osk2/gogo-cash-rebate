@@ -1,5 +1,7 @@
 # gogo-cash-rebate
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/osk2/gogo-cash-rebate.svg)](https://greenkeeper.io/)
+
 Cash rebate calculator for Taishin @GoGo
 
 > 台新 @GoGo 現金回饋計算機
