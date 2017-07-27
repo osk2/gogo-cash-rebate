@@ -1,9 +1,14 @@
 {
   "name": "gogo-cash-back",
-  "version": "0.0.1",
-  "description": "Cash back calculator for Richart @GoGo",
+  "version": "0.9.0",
+  "description": "Cash rebate calculator for Richart @GoGo",
   "main": "app.js",
-  "repository": "https://github.com/osk2/gogo-cash-back.git",
+  "scripts": {
+    "start": "node .",
+    "test": "mocha",
+    "posttest": "nsp check"
+  },
+  "repository": "https://github.com/osk2/gogo-cash-rebate.git",
   "author": "osk2",
   "license": "MIT",
   "dependencies": {
@@ -16,6 +21,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.0",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "nsp": "^2.7.0"
   }
 }

@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+  - 8
+cache:
+  directories:
+    - node_modules
+    - public/components
+install: 
+  - yarn
+  - bower install
+before_script:
+  - npm install -g yarn
+script:
+  - yarn run test
+  - yarn run posttest
