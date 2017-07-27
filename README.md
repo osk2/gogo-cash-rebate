@@ -4,6 +4,9 @@ Cash rebate calculator for Taishin @GoGo
 
 > 台新 @GoGo 現金回饋計算機
 
+[![Website](https://img.shields.io/website-up-down-green-red/https/osk2.me%3A9090.svg)](https://osk2.me:9090)
+[![Build Status](https://travis-ci.org/osk2/gogo-cash-rebate.svg?branch=master)](https://travis-ci.org/osk2/gogo-cash-rebate)
+
 ## Demo
 
 [https://osk2.me:9090](https://osk2.me:9090)
@@ -39,6 +42,12 @@ node .
 ```
 
 App will listen on port 9090 by default
+
+## Test
+
+```shell
+yarn run test
+```
 
 ## License
 
