@@ -20,7 +20,7 @@ const sslOptions = {
   cert: isProduction ? fs.readFileSync(config.cert) : ''
 };
 
-const parseXLS = path=> {
+const parseXLS = path => {
   try {
     const workbook = XLSX.readFile(path);
     const worksheet = workbook.Sheets[workbook.SheetNames[0]];
