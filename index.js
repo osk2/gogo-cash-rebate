@@ -4,6 +4,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 const express = require('express');
 const app = express();
+const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const multipartMiddleware = multipart();
@@ -117,6 +118,8 @@ const calculateRebate = (bills, start = 0, end = bills.length) => {
 }
 
 app.use(express.static('public'));
+app.use(helmet());
+app.disable('x-powered-by');
 
 app.post('/converter', multipartMiddleware, (req, res) => {
   let bills = parseXLS(req.files.xls.path);
