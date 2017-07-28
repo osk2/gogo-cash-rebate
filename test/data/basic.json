@@ -1,0 +1,15 @@
+{
+  "transaction_date": "2017/07/09",
+  "posting_date": "2017/07/10",
+  "card": "@GoGo iCash聯名卡",
+  "amount": -1684,
+  "detail": "大潤發台南店G3510TAINAN/TW",
+  "currency": "-",
+  "category": "其他",
+  "comment": "-",
+  "cash": {
+    "base": 8,
+    "binding": 17,
+    "bonus": 0
+  }
+}

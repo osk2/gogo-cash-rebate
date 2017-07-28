@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const _ = require('lodash');
 const expect = require('chai').expect;
 const util = require('../lib/util');
 const files = {
@@ -7,7 +8,10 @@ const files = {
   originalJSON: path.resolve(__dirname, 'data/original.json'),
   currencyJSON: path.resolve(__dirname, 'data/currency.json'),
   sortedJSON: path.resolve(__dirname, 'data/sorted.json'),
-  processedJSON: path.resolve(__dirname, 'data/processed.json')
+  processedJSON: path.resolve(__dirname, 'data/processed.json'),
+  basicJSON: path.resolve(__dirname, 'data/basic.json'),
+  noRebateJSON: path.resolve(__dirname, 'data/no-rebate.json'),
+  bonusJSON: path.resolve(__dirname, 'data/bonus.json'),
 }
 const readFile = path => {
   return fs.readFileSync(path, 'utf8');
@@ -44,5 +48,59 @@ describe('Data Processing', () => {
     const resultJSON = JSON.stringify(util.processBills(originalJSON), null, 2);
 
     expect(resultJSON).to.equal(processedJSON);
+  });
+});
+
+
+describe('Rebate Calculation', () => {
+
+  const rateTable = require('../lib/rate');
+
+  const calculateRecord = (record) => {
+    let resultJSON;
+    let isCashBack;
+
+    _.each(rateTable, rate => {
+      if (rate.match.test(record.detail)) {
+        if (rate.rate !== 0) {
+          resultJSON = util._.calculateRebate(record, 0 - record.amount, rate.rate);
+        } else {
+          resultJSON = util._.calculateRebate(record, 0, 0);
+        }
+        isCashBack = true;
+        return false;
+      }
+      if (!isCashBack) {
+        resultJSON = util._.calculateRebate(record, 0 - record.amount, 0);
+      }
+    });
+    return resultJSON;
+  }
+
+  it('should have basic rebate', () => {
+    const processedJSON = JSON.parse(readFile(files.processedJSON));
+    const basicBill = processedJSON[0];
+    const basicJSON = readFile(files.basicJSON);
+    const resultJSON = JSON.stringify(calculateRecord(basicBill), null, 2);
+  
+    expect(resultJSON).to.equal(basicJSON);
+  });
+
+  it('should have no rebate', () => {
+    const processedJSON = JSON.parse(readFile(files.processedJSON));
+    const basicBill = processedJSON[1];
+    const noRebateJSON = readFile(files.noRebateJSON);
+    const resultJSON = JSON.stringify(calculateRecord(basicBill), null, 2);
+  
+    expect(resultJSON).to.equal(noRebateJSON);
+  });
+
+  it('should have bonus rebate', () => {
+    const processedJSON = JSON.parse(readFile(files.processedJSON));
+    const basicBill = processedJSON[3];
+    const bonusJSON = readFile(files.bonusJSON);
+    const resultJSON = JSON.stringify(calculateRecord(basicBill), null, 2);
+  
+    expect(resultJSON).to.equal(bonusJSON);
   });
 });

@@ -1,0 +1,15 @@
+{
+  "transaction_date": "2017/07/12",
+  "posting_date": "2017/07/12",
+  "card": "@GoGo iCash聯名卡",
+  "amount": 21,
+  "detail": "活動類蝦皮回饋",
+  "currency": "-",
+  "category": "其他",
+  "comment": "-",
+  "cash": {
+    "base": 0,
+    "binding": 0,
+    "bonus": 0
+  }
+}
