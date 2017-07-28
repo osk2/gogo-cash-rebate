@@ -1,17 +1,19 @@
 language: node_js
 node_js:
+  - 7
   - 8
 cache:
   directories:
     - node_modules
     - public/components
 before_install:
-  - npm install -g bower
+  - npm i -g bower codecov istanbul
 install: 
   - yarn
   - bower install
 script:
-  - yarn run test
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
   - yarn run posttest
 notifications:
     slack: araytek:B8Xevy6shC51ftn3tBiZR8fw
