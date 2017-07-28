@@ -13,3 +13,5 @@ install:
 script:
   - yarn run test
   - yarn run posttest
+notifications:
+    slack: araytek:B8Xevy6shC51ftn3tBiZR8fw
