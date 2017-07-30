@@ -12,9 +12,17 @@ const files = {
   basicJSON: path.resolve(__dirname, 'data/basic.json'),
   noRebateJSON: path.resolve(__dirname, 'data/no-rebate.json'),
   bonusJSON: path.resolve(__dirname, 'data/bonus.json'),
+  detailJSON: path.resolve(__dirname, 'data/detail.json')
 }
 const readFile = path => {
   return fs.readFileSync(path, 'utf8');
+}
+
+const writeJSONFile = (file, data) => {
+  fs.writeFileSync(
+    path.resolve(__dirname, file),
+    JSON.stringify(data, null, 2)
+  );
 }
 
 describe('Data Processing', () => {
@@ -102,5 +110,13 @@ describe('Rebate Calculation', () => {
     const resultJSON = JSON.stringify(calculateRecord(basicBill), null, 2);
   
     expect(resultJSON).to.equal(bonusJSON);
+  });
+
+  it('should generate detail of rebate', () => {
+    const processedJSON = JSON.parse(readFile(files.processedJSON));
+    const detailJSON = readFile(files.detailJSON);
+    const resultJSON = JSON.stringify(util.calculateTotalRebate(processedJSON, 0, 4), null, 2);
+
+    expect(resultJSON).to.equal(detailJSON);
   });
 });
