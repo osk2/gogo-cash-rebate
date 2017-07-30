@@ -7,6 +7,7 @@ Cash rebate calculator for Taishin @GoGo
 [![Website](https://img.shields.io/website-up-down-green-red/https/osk2.me%3A9090.svg)](https://osk2.me:9090)
 [![Build Status](https://travis-ci.org/osk2/gogo-cash-rebate.svg?branch=master)](https://travis-ci.org/osk2/gogo-cash-rebate)
 [![Greenkeeper badge](https://badges.greenkeeper.io/osk2/gogo-cash-rebate.svg)](https://greenkeeper.io/)
+[![codecov](https://codecov.io/gh/osk2/gogo-cash-rebate/branch/master/graph/badge.svg)](https://codecov.io/gh/osk2/gogo-cash-rebate)
 
 ## Demo
 
