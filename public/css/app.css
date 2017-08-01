@@ -1,5 +1,7 @@
 html,
-body {
+body,
+.app,
+.main.container {
   height: 100%;
 }
 p {
@@ -54,6 +56,7 @@ form {
 }
 .timeline-item:last-child {
   height: 100%;
+  padding-bottom: 100px;
   -o-border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: -webkit-linear-gradient(top, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
      border-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.3) 30%, transparent) 1 100%;
@@ -74,18 +77,18 @@ form {
   display: none;
 }
 
-/* MISC */
+/* PANEL */
 
 .value-panel {
   margin-top: 1em;
 }
 
-@media (min-width: 992px) {
-  .col-md-6.value-panel {
-    position: fixed;
-    left: 50%;
-  }
+.result-panel {
+  height: 100%;
+  overflow-y: scroll;
 }
+
+/* MISC */
 
 .image-wrapper {
   margin: 3em;
@@ -94,4 +97,20 @@ form {
 
 .copyright-text {
   text-align: right;
+}
+
+.fade-wrapper {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+.fade-div {
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0), #fff);
+  position: fixed;
+  bottom: 0;
+  left: 135px;
+  width: calc(50% - 135px);
 }
