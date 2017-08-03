@@ -13,9 +13,13 @@ Cash rebate calculator for Taishin @GoGo
 
 [https://osk2.me:9090](https://osk2.me:9090)
 
-## Installation
+## Prerequisite
 
-Make sure you have [yarn](https://yarnpkg.com/) installed
+- Node.js version >= 6
+- [Yarn](https://yarnpkg.com)
+- [Bower](https://bower.io)
+
+## Installation
 
 ```shell
 yarn
