@@ -19,8 +19,10 @@ app.use(helmet());
 app.disable('x-powered-by');
 
 app.post('/converter', multipartMiddleware, (req, res) => {
-  let bills = util.parseXLS(req.files.xls.path);
-
+  const xlsPath = req.files.xls.path;
+  let bills = util.parseXLS(xlsPath);
+  
+  fs.unlinkSync(xlsPath);
   bills = util.processBills(bills);
   res.json(bills);
 });
