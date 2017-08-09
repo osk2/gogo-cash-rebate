@@ -1,12 +1,15 @@
 const fs = require('fs');
+const http = require('http');
+const https = require('https');
 const express = require('express');
-const app = express();
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
-const multipartMiddleware = multipart();
 const config = require('./lib/config');
 const util = require('./lib/util');
+
+const multipartMiddleware = multipart();
+const app = express();
 const isProduction = (process.env.NODE_ENV === 'production');
 const sslOptions = {
   ca: isProduction ? fs.readFileSync(config.ca) : '',
@@ -21,7 +24,7 @@ app.disable('x-powered-by');
 app.post('/converter', multipartMiddleware, (req, res) => {
   const xlsPath = req.files.xls.path;
   let bills = util.parseXLS(xlsPath);
-  
+
   fs.unlinkSync(xlsPath);
   bills = util.processBills(bills);
   res.json(bills);
@@ -42,8 +45,8 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
     res.status(500).send('Empty request.');
     return;
   }
-  fs.readFile('./feedback.json', (err, data) => {
-    if (err) {
+  fs.readFile('./feedback.json', (readErr, data) => {
+    if (readErr) {
       res.status(500).send('Error occurred while open file.');
       return;
     }
@@ -58,8 +61,8 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
       comment: req.body['input-comment']
     });
     currentFeedback = JSON.stringify(currentFeedback, null, 2);
-    fs.writeFile('./feedback.json', currentFeedback, err => {
-      if (err) {
+    fs.writeFile('./feedback.json', currentFeedback, (writeErr) => {
+      if (writeErr) {
         res.status(500).send('Error occurred while write file.');
         return;
       }
@@ -71,14 +74,10 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
 });
 
 if (isProduction) {
-  const https = require('https');
-
   https.createServer(sslOptions, app).listen(config.port, () => {
     console.log('App listening on port', config.port);
   });
 } else {
-  const http = require('http');
-
   http.createServer(app).listen(config.port, () => {
     console.log('App listening on port', config.port);
   });
