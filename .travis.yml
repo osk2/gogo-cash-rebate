@@ -4,17 +4,21 @@ node_js:
   - 7
   - 8
 cache:
+  yarn: true
   directories:
-    - node_modules
     - public/components
 before_install:
-  - npm i -g bower codecov istanbul
+  - yarn global add bower codecov istanbul eslint
 install: 
   - yarn
   - bower install
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
+  - eslint app.js
+  - eslint lib/config.js
+  - eslint lib/rate.js
+  - eslint lib/util.js
   - yarn run posttest
 notifications:
     slack:
