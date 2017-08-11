@@ -41,7 +41,7 @@
             <p>
               金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
             </p>
-            <p>備註： {{record.comment}}</p>
+            <p v-if="record.rateNote">備註： {{record.rateNote}}</p>
             <div v-if="record.cash">
               <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
             </div>
