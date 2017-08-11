@@ -34,7 +34,8 @@
         "base": 0,
         "binding": 0,
         "bonus": 0
-      }
+      },
+      "rateNote": "特殊活動不計算回饋"
     },
     {
       "transaction_date": "2017/07/11",
@@ -49,7 +50,8 @@
         "base": 0,
         "binding": 0,
         "bonus": 0
-      }
+      },
+      "rateNote": "街口支付有`街口-`和`街口支付-`兩種前綴"
     },
     {
       "transaction_date": "2017/07/12",
@@ -64,7 +66,8 @@
         "base": 1,
         "binding": 1,
         "bonus": 2
-      }
+      },
+      "rateNote": "街口支付有`街口-`和`街口支付-`兩種前綴"
     }
   ]
 }
