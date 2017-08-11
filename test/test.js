@@ -12,7 +12,8 @@ const files = {
   basicJSON: path.resolve(__dirname, 'data/basic.json'),
   noRebateJSON: path.resolve(__dirname, 'data/no-rebate.json'),
   bonusJSON: path.resolve(__dirname, 'data/bonus.json'),
-  detailJSON: path.resolve(__dirname, 'data/detail.json')
+  detailJSON: path.resolve(__dirname, 'data/detail.json'),
+  overLimitJSON: path.resolve(__dirname, 'data/over-limit.json')
 }
 const readFile = path => {
   return fs.readFileSync(path, 'utf8');
@@ -119,4 +120,15 @@ describe('Rebate Calculation', () => {
 
     expect(resultJSON).to.equal(detailJSON);
   });
+
+  it('should not over rebate limit', () => {
+    const processedJSON = JSON.parse(readFile(files.processedJSON));
+    const overLimitJSON = readFile(files.overLimitJSON);
+    let resultJSON;
+
+    processedJSON[3].amount = -30000;
+    resultJSON = JSON.stringify(util.calculateTotalRebate(processedJSON, 0, 4), null, 2);
+    expect(resultJSON).to.equal(overLimitJSON);
+  });
+
 });

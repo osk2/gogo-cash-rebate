@@ -1,10 +1,10 @@
 {
-  "basicRebate": 9,
-  "bindingRebate": 18,
-  "bonusRebate": 3,
-  "totalRebate": 30,
-  "totalBonusRebate": 21,
-  "overBounsLimit": false,
+  "basicRebate": 159,
+  "bindingRebate": 0,
+  "bonusRebate": 500,
+  "totalRebate": 659,
+  "totalBonusRebate": 917,
+  "overBounsLimit": true,
   "bills": [
     {
       "transaction_date": "2017/07/09",
@@ -55,15 +55,15 @@
       "transaction_date": "2017/07/12",
       "posting_date": "2017/07/13",
       "card": "@GoGo iCash聯名卡",
-      "amount": -124,
+      "amount": -30000,
       "detail": "街口﹣台灣大車隊TAIPEI/TW",
       "currency": "-",
       "category": "其他",
       "comment": "-",
       "cash": {
-        "base": 1,
-        "binding": 1,
-        "bonus": 2
+        "base": 150,
+        "binding": 300,
+        "bonus": 600
       }
     }
   ]
