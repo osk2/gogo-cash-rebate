@@ -81,7 +81,11 @@
               <div class="panel-body">
                 總回饋
                 <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="包含綁定扣款加碼"></i>
-                <h1>{{bonus.totalRebate}}</h1>
+                <h1 v-if="!bonus.overBounsLimit">{{bonus.totalRebate}}</h1>
+                <h1 v-else>
+                  {{bonus.totalRebate}}
+                  <small data-toggle="tooltip" data-placement="bottom" title="真是不小心，超過上限了"><del>{{bonus.totalBonusRebate}}</del></small>
+                </h1>
               </div>
             </div>
           </div>
