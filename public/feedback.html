@@ -76,6 +76,7 @@
   <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="components/axios/dist/axios.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.js" integrity="sha256-xofl41Tt0WRg2Q0LrntvSB6qv1Mzz/ZLvSyi+O08d1g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
   <script>
     !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
     (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
@@ -112,6 +113,8 @@
         )
       })
     });
+
+    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
   </script>
 </body>
 <body>

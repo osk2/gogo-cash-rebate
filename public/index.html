@@ -144,6 +144,7 @@
   <script src="components/vue/dist/vue.min.js"></script>
   <script src="components/moment/min/moment.min.js"></script>
   <script src="components/lodash/dist/lodash.min.js"></script>
+  <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
   <script>
     !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
     (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
@@ -200,6 +201,8 @@
         }
       }
     });
+
+    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
   </script>
 </body>
 </html>
