@@ -9,7 +9,7 @@
   <meta property="og:url" content="https://osk2.me:9090">
   <meta property="og:image" content="https://osk2.me:9090/img/richart-logo.png">
   <meta property="og:description" content="非官方的現金回饋計算機，快來算算看回饋有沒有被漏掉了">
-  <link rel="stylesheet" href="components/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.5/sweetalert2.min.css" integrity="sha256-fmdDIg1KI3wbdH0gfFQGXexodQ3SQzBTHDGicLAgje8=" crossorigin="anonymous" />
 </head>
 <body>
@@ -87,6 +87,8 @@
     gogo('send', 'pageview');
   </script>
   <script>
+    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
+
     $('form').on('submit', function (e) {
       e.preventDefault();
       gogo('send', 'event', 'Feedback', 'submit');
@@ -113,8 +115,6 @@
         )
       })
     });
-
-    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
   </script>
 </body>
 <body>

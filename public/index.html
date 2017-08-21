@@ -31,12 +31,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">@GoGo 回饋計算機</a>
+          <a class="navbar-brand" href="/">@GoGo 回饋計算機</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li class="active"><a href="/">首頁</a></li>
+            <li><a href="/list.html">收錄通路</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="https://github.com/osk2/gogo-cash-rebate" target="_blank">GitHub</a></li>
@@ -155,6 +156,8 @@
     gogo('send', 'pageview');
   </script>
   <script>
+    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
+
     const timeline = new Vue({
       el: '.app',
       data: {
@@ -201,8 +204,6 @@
         }
       }
     });
-
-    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
   </script>
 </body>
 </html>

@@ -21,6 +21,19 @@ app.use(express.static('public'));
 app.use(helmet());
 app.disable('x-powered-by');
 
+app.get('/rateLists', (req, res) => {
+  const result = {};
+  let rates = require('./lib/rate.js');
+
+  rates.map(rate => {
+    delete rate.match;
+    return rate;
+  });
+  result.count = rates.length;
+  result.rates = rates;
+  res.json(result);
+});
+
 app.post('/converter', multipartMiddleware, (req, res) => {
   const xlsPath = req.files.xls.path;
   let bills = util.parseXLS(xlsPath);

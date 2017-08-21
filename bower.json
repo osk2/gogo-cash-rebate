@@ -20,6 +20,7 @@
     "bootstrap": "^3.3.7",
     "axios": "^0.16.2",
     "lodash": "^4.17.4",
-    "moment": "^2.18.1"
+    "moment": "^2.18.1",
+    "font-awesome": "fontawesome#^4.7.0"
   }
 }
