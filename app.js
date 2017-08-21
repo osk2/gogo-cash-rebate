@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const multipart = require('connect-multiparty');
 const config = require('./lib/config');
 const util = require('./lib/util');
+const rates = require('./lib/rate');
 
 const multipartMiddleware = multipart();
 const app = express();
@@ -23,9 +24,8 @@ app.disable('x-powered-by');
 
 app.get('/rateLists', (req, res) => {
   const result = {};
-  let rates = require('./lib/rate.js');
 
-  rates.map(rate => {
+  rates.map((rate) => {
     delete rate.match;
     return rate;
   });

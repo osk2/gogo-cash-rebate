@@ -16,9 +16,7 @@ script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
   - ./node_modules/eslint/bin/eslint.js app.js
-  - ./node_modules/eslint/bin/eslint.js lib/config.js
-  - ./node_modules/eslint/bin/eslint.js lib/rate.js
-  - ./node_modules/eslint/bin/eslint.js lib/util.js
+  - ./node_modules/eslint/bin/eslint.js lib/*.js
   - yarn run posttest
 notifications:
     slack:
