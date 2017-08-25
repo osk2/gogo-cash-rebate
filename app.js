@@ -25,10 +25,6 @@ app.disable('x-powered-by');
 app.get('/rateLists', (req, res) => {
   const result = {};
 
-  rates.map((rate) => {
-    delete rate.match;
-    return rate;
-  });
   result.count = rates.length;
   result.rates = rates;
   res.json(result);
