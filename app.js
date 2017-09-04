@@ -13,9 +13,9 @@ const multipartMiddleware = multipart();
 const app = express();
 const isProduction = (process.env.NODE_ENV === 'production');
 const sslOptions = {
-  ca: isProduction ? fs.readFileSync(config.ca) : '',
-  key: isProduction ? fs.readFileSync(config.key) : '',
-  cert: isProduction ? fs.readFileSync(config.cert) : ''
+  ca: fs.readFileSync(config.ca),
+  key: fs.readFileSync(config.key),
+  cert: fs.readFileSync(config.cert)
 };
 
 app.use(express.static('public'));
