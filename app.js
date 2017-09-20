@@ -13,9 +13,9 @@ const multipartMiddleware = multipart();
 const app = express();
 const isProduction = (process.env.NODE_ENV === 'production');
 const sslOptions = {
-  ca: fs.readFileSync(config.ca),
-  key: fs.readFileSync(config.key),
-  cert: fs.readFileSync(config.cert)
+  ca: isProduction ? fs.readFileSync(config.ca) : '',
+  key: isProduction ? fs.readFileSync(config.key) : '',
+  cert: isProduction ? fs.readFileSync(config.cert) : ''
 };
 
 app.use(express.static('public'));
@@ -60,10 +60,8 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
     currentFeedback = JSON.parse(data);
     currentFeedback.push({
       name: req.body['input-name'],
-      email: req.body['input-email'],
       item: req.body['input-store'],
       detail: req.body['input-detail'],
-      match: req.body['input-match'],
       rate: req.body['input-rate'],
       comment: req.body['input-comment']
     });
