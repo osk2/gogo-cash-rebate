@@ -104,7 +104,9 @@
                 <h1 v-if="!bonus.overBounsLimit">{{bonus.totalRebate}}</h1>
                 <h1 v-else>
                   {{bonus.totalRebate}}
-                  <small data-toggle="tooltip" data-placement="bottom" title="真是不小心，超過上限了"><del>{{bonus.totalBonusRebate}}</del></small>
+                  <small data-toggle="tooltip" data-placement="bottom" title="真是不小心，超過上限了">
+                    <del>{{bonus.totalBonusRebate + bonus.basicRebate}}</del>
+                  </small>
                 </h1>
               </div>
             </div>
