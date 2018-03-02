@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node .",
     "test": "mocha",
+    "lint": "eslint app.js && eslint lib/*.js",
     "posttest": "nsp check"
   },
   "repository": "https://github.com/osk2/gogo-cash-rebate.git",
