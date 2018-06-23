@@ -15,7 +15,7 @@ Cash rebate calculator for Taishin @GoGo
 
 ## Prerequisite
 
-- Node.js version >= 7
+- Node.js version >= 8
 - [Yarn](https://yarnpkg.com)
 - [Bower](https://bower.io)
 
