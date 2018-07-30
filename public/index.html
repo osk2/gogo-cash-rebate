@@ -1,211 +1,50 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>台新 @GoGo 現金回饋計算機</title>
-  <meta property="og:title" content="台新 @GoGo 現金回饋計算機">
-  <meta property="og:url" content="https://osk2.me:9090">
-  <meta property="og:image" content="https://osk2.me:9090/img/richart-logo.png">
-  <meta property="og:description" content="非官方的現金回饋計算機，快來算算看回饋有沒有被漏掉了">
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/bootstrap.min.css">
-</head>
-<body>
-  <div id="fb-root"></div>
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=1547299012233601";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));</script>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>台新 @GoGo 現金回饋計算機</title>
+    <meta property="og:title" content="台新 @GoGo 現金回饋計算機">
+    <meta property="og:url" content="https://osk2.me:9090">
+    <meta property="og:image" content="https://osk2.me:9090/img/richart-logo.png">
+    <meta property="og:description" content="非官方的現金回饋計算機，快來算算看回饋有沒有被漏掉了">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  </head>
+  <body>
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.10&appId=1547299012233601";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+    <noscript>
+      <strong>We're sorry but gogo-cash-rebate doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
 
-  <div class="container main">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">@GoGo 回饋計算機</a>
-        </div>
 
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">首頁</a></li>
-            <li><a href="/list.html">收錄通路</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="https://github.com/osk2/gogo-cash-rebate" target="_blank">GitHub</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="row app">
-      <div class="col-md-6 result-panel">
-        <div class="image-wrapper hidden-sm hidden-xs" v-if="stage !== 'result'">
-          <img src="img/richart-standby.png">
-        </div>
-        <div class="timeline" v-show="records.length" v-cloak>
-          <div
-            class="timeline-item"
-            v-for="(record, index) in records"
-            v-bind:date-is="record.posting_date"
-            v-bind:data-index="index"
-          >
-            <p>{{record.detail}}</p>
-            <p>
-              金額 <strong class="amount" v-bind:class="{red: record.amount < 0, green: record.amount > 0}">{{record.amount}}</strong>
-            </p>
-            <p v-if="record.rateNote">備註： {{record.rateNote}}</p>
-            <div v-if="record.cash">
-              <p>一般回饋 <strong>{{record.cash.base}}</strong> 指定加碼 <strong>{{record.cash.bonus}} </strong>綁定加碼 <strong>{{record.cash.binding}}</strong></p>
-            </div>
-          </div>
-        </div>
-        <div class="fade-div"></div>
-      </div>
-      <div class="col-md-6 value-panel">
-        <div class="row" v-if="stage === 'result'">
-          <div class="col-xs-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                基本回饋
-                <h1>{{bonus.basicRebate}}</h1>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                指定通路回饋 
-                <i class="glyphicon glyphicon-question-sign popover-specific"></i>
-                <h1>{{bonus.bonusRebate}}</h1>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                綁定扣款加碼
-                <h1>{{bonus.bindingRebate}}</h1>
-              </div>
-            </div>
-          </div>
-          <div class="col-xs-6">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                總回饋
-                <i class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="包含綁定扣款加碼"></i>
-                <h1 v-if="!bonus.overBounsLimit">{{bonus.totalRebate}}</h1>
-                <h1 v-else>
-                  {{bonus.totalRebate}}
-                  <small data-toggle="tooltip" data-placement="bottom" title="真是不小心，超過上限了">
-                    <del>{{bonus.totalBonusRebate + bonus.basicRebate}}</del>
-                  </small>
-                </h1>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row" v-if="stage === 'calculate'">
-          <div class="col-md-12">
-            <p>計算 <strong>2017/06/12</strong> ~ <strong>2017/07/12</strong> 間 <strong>25</strong> 筆消費紀錄的回饋金額</p>
-          </div>
-        </div>
-        <form v-on:submit="upload" v-if="stage === 'upload'">
-          <div class="form-group">
-            <label>@GoGo明細</label>
-            <input name="xls" type="file" class="form-control" accept="application/vnd.ms-excel" required>
-            <p class="help-block">匯入 Richart 消費明細</p>
-          </div>
-          <div class="form-group">
-            <label>起始</label>
-            <input name="start" type="number" class="form-control" value="0">
-          </div>
-          <div class="form-group">
-            <label>結束</label>
-            <input name="end" type="number" class="form-control" value="23">
-          </div>
-          <button type="submit" class="btn btn-primary">分析</button>
-        </form>
-        <div class="fb-like" data-href="https://osk2.me:9090" data-layout="standard" data-action="like"data-show-faces="true" data-share="true" style="margin: 1em 0"></div>
-        <p class="text-muted pull-right copyright-text">
-          網頁中之 Richart 圖樣版權歸台新銀行所有<br>
-          Coded by <a href="https://osk2.me">osk2</a> with <i class="glyphicon glyphicon-heart text-danger"></i>
-        </p>
-      </div>
-    </div>
-  </div>
-  <script src="components/jquery/dist/jquery.min.js"></script>
-  <script src="components/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="components/axios/dist/axios.min.js"></script>
-  <script src="components/vue/dist/vue.min.js"></script>
-  <script src="components/moment/min/moment.min.js"></script>
-  <script src="components/lodash/dist/lodash.min.js"></script>
-  <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
-  <script>
-    !function(g,o,G,O){g.GoogleAnalyticsObject=G;g[G]||(g[G]=function(){
-    (g[G].q=g[G].q||[]).push(arguments)});g[G].l=+new Date;O=o.createElement('script');
-    var e=o.scripts[0];O.src='//www.google-analytics.com/analytics.js';
-    e.parentNode.insertBefore(O,e)}(window,document,'gogo');
+    <div id="app"></div>
 
-    gogo('create', 'UA-69159377-5', 'auto');
-    gogo('send', 'pageview');
-  </script>
-  <script>
-    Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
+    
+    <script src="https://cdn.ravenjs.com/3.17.0/raven.min.js" crossorigin="anonymous"></script>
+    <script>
+      !function (g, o, G, O) {
+      g.GoogleAnalyticsObject = G; g[G] || (g[G] = function () {
+        (g[G].q = g[G].q || []).push(arguments)
+      }); g[G].l = +new Date; O = o.createElement('script');
+        var e = o.scripts[0]; O.src = '//www.google-analytics.com/analytics.js';
+        e.parentNode.insertBefore(O, e)
+      }(window, document, 'gogo');
 
-    const timeline = new Vue({
-      el: '.app',
-      data: {
-        stage: 'upload',
-        records: [],
-        selected: [],
-        bonus: {}
-      },
-      updated() {
-        $('form').hide(500);
-        $('.popover-specific').popover({
-          title: '回饋少了嗎？',
-          placement: 'bottom',
-          html: true,
-          content: '<p>下列情況可能導致回饋金額與實際不符</p>' +
-            '<ol>' +
-              '<li>該通路尚未被收錄於本系統，請協助<a href="feedback.html" target="_blank">回報</a></li>' +
-              '<li>接近結帳日的回饋可能遲至次月發放，請洽詢台新客服</li>' +
-              '<li>指定的計算區間有誤，請檢查左側紀錄是否正確</li>' +
-            '</ol>'
-        });
-        $('[data-toggle="tooltip"]').tooltip();
-      },
-      methods: {
-        upload(e) {
-          gogo('send', 'event', 'Calculation', 'submit');
-          e.preventDefault();
-          axios
-          .post('/converter', new FormData($('form')[0]))
-          .then(response => {
-            const bills = _.reverse(_.sortBy(response.data, ['posting_date']));
-            const start = parseInt($('input[name="start"]').val());
-            const end = parseInt($('input[name="end"]').val());
-
-            timeline.stage = 'calculate';
-            timeline.records = bills;
-            return axios.post('/calculate', {bills: bills, start: start, end: end});
-          })
-          .then(response => {
-            timeline.stage = 'result';
-            timeline.bonus = response.data;
-            timeline.records = response.data.bills;
-          });
-        }
-      }
-    });
-  </script>
-</body>
+      gogo('create', 'UA-69159377-5', 'auto');
+      gogo('send', 'pageview');
+    </script>
+    <script>
+      Raven.config('https://7dc4836f8b1443adbceb2f27c1d5b461@sentry.io/205428').install();
+    </script>
+    <script src="../src/main.js"></script>
+  </body>
 </html>

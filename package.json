@@ -1,31 +1,25 @@
 {
-  "name": "gogo-cash-back",
-  "version": "0.9.0",
-  "description": "Cash rebate calculator for Taishin @GoGo",
-  "main": "app.js",
+  "name": "gogo-cash-rebate",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "start": "node .",
-    "test": "mocha",
-    "lint": "eslint app.js && eslint lib/*.js",
-    "posttest": "nsp check"
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "test:unit": "vue-cli-service test:unit"
   },
-  "repository": "https://github.com/osk2/gogo-cash-rebate.git",
-  "author": "osk2",
-  "license": "MIT",
   "dependencies": {
-    "body-parser": "^1.17.2",
-    "connect-multiparty": "^2.0.0",
-    "express": "^4.15.3",
-    "helmet": "^3.8.0",
-    "lodash": "^4.17.4",
-    "xlsx": "^0.13.0"
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
-    "chai": "^4.1.0",
-    "eslint": "^5.0.0",
-    "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.12.0",
-    "mocha": "^5.0.0",
-    "nsp": "^3.0.0"
+    "@vue/cli-plugin-babel": "^3.0.0-rc.5",
+    "@vue/cli-plugin-eslint": "^3.0.0-rc.5",
+    "@vue/cli-plugin-unit-mocha": "^3.0.0-rc.5",
+    "@vue/cli-service": "^3.0.0-rc.5",
+    "@vue/eslint-config-airbnb": "^3.0.0-rc.5",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "chai": "^4.1.2",
+    "vue-template-compiler": "^2.5.16"
   }
 }
