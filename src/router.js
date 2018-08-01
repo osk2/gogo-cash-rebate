@@ -5,17 +5,20 @@ import List from './views/list.vue';
 
 Vue.use(Router);
 
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: Home,
+  },
+  {
+    path: '/list',
+    name: 'list',
+    component: List,
+  },
+];
+
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-    },
-    {
-      path: '/list',
-      name: 'list',
-      component: List,
-    },
-  ],
+  linkExactActiveClass: 'active',
+  routes
 });

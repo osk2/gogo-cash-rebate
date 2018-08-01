@@ -2,12 +2,12 @@
   <div class="row item">
     <div class="col-md-10 col-xs-8 item-detail">
       <h4>
-        {{item.item}}
+        {{ rateItem.item }}
         <br>
-        <small class="text-muted" v-if="item.note">{{item.note}}</small>
-        <small v-if="item.contributor" class="text-muted">
+        <small class="text-muted" v-if="rateItem.note">{{ rateItem.note }}</small>
+        <small v-if="rateItem.contributor" class="text-muted">
           <i class="fa fa-user" aria-hidden="true"></i> 
-          本通路由 {{item.contributor}} 提供
+          本通路由 {{ rateItem.contributor }} 提供
         </small>
       </h4>
     </div>
@@ -16,12 +16,12 @@
         'col-md-2',
         'col-xs-4',
         'item-type',
-        getRateDescription(item.rate).rateClass]"
+        getRateDescription(rateItem.rate).rateClass]"
     >
       <h4 class="white text">
-        <span style="font-size: 1.5em">{{getRateDescription(item.rate).rateNumber}}</span>
+        <span style="font-size: 1.5em">{{getRateDescription(rateItem.rate).rateNumber}}</span>
         <br>
-        <small class="white text">{{getRateDescription(item.rate).rateText}}</small>
+        <small class="white text">{{getRateDescription(rateItem.rate).rateText}}</small>
       </h4>
     </div>
   </div>
@@ -29,9 +29,9 @@
 
 <script>
 export default {
-  name: 'ListItem',
+  name: 'RateItem',
   props: {
-    item: Object,
+    rateItem: Object,
   },
   methods: {
     getRateDescription(rate) {
@@ -44,7 +44,7 @@ export default {
       rateText = isBonus ? '指定通路加碼' : '無現金回饋';
       rateNumber = (rate * 100).toString() + '%';
 
-      return {rateClass, rateText, rateNumber};
+      return { rateClass, rateText, rateNumber };
     }
   }
 };
