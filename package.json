@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "font-awesome": "^4.7.0",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
   },
@@ -20,6 +21,7 @@
     "@vue/eslint-config-airbnb": "^3.0.0-rc.5",
     "@vue/test-utils": "^1.0.0-beta.20",
     "chai": "^4.1.2",
+    "node-sass": "^4.9.2",
     "vue-template-compiler": "^2.5.16"
   }
 }
