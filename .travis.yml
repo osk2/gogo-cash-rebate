@@ -23,3 +23,7 @@ notifications:
         - araytek:B8Xevy6shC51ftn3tBiZR8fw
       on_success: change
       on_failure: always
+branches:
+  only:
+    - master
+    - /^greenkeeper.*$/
