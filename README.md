@@ -8,7 +8,6 @@ Cash rebate calculator for Taishin @GoGo
 [![Build Status](https://travis-ci.org/osk2/gogo-cash-rebate.svg?branch=master)](https://travis-ci.org/osk2/gogo-cash-rebate)
 [![Known Vulnerabilities](https://snyk.io/test/github/osk2/gogo-cash-rebate/badge.svg?targetFile=package.json)](https://snyk.io/test/github/osk2/gogo-cash-rebate?targetFile=package.json)
 [![codecov](https://codecov.io/gh/osk2/gogo-cash-rebate/branch/master/graph/badge.svg)](https://codecov.io/gh/osk2/gogo-cash-rebate)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fosk2%2Fgogo-cash-rebate.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fosk2%2Fgogo-cash-rebate?ref=badge_shield)
 
 ## Demo
 
