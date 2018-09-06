@@ -60,3 +60,6 @@ yarn run test
 This project is licensed under the MIT license.
 
 Read [LICENSE](LICENSE) for more information.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fosk2%2Fgogo-cash-rebate.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fosk2%2Fgogo-cash-rebate?ref=badge_large)
