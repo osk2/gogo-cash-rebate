@@ -46,6 +46,13 @@
       </div>
     </nav>
     <div class="row app">
+      <div class="col-xs-12" v-if="stage !== 'result'">
+        <div class="alert alert-info">
+          嗨嗨！網站目前正在改版
+          <br>
+          雖然進度已經夠慢了，不過有什麼建議的話還是歡迎 <a href="mailto:sc60714@gmail.com">寫信</a> 告訴我啦～
+        </div>
+      </div>
       <div class="col-md-6 result-panel">
         <div class="image-wrapper hidden-sm hidden-xs" v-if="stage !== 'result'">
           <img src="img/richart-standby.png">
