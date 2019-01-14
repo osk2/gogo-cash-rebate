@@ -16,7 +16,6 @@ script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov
   - yarn run lint
-  - yarn run posttest
 notifications:
     slack:
       rooms: 
