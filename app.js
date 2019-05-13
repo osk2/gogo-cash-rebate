@@ -40,9 +40,9 @@ app.post('/converter', multipartMiddleware, (req, res) => {
 });
 
 app.post('/calculate', bodyParser.json(), (req, res) => {
-  const { bills, billsStart, billsEnd } = req.body;
+  const { bills, start, end } = req.body;
 
-  res.json(util.calculateTotalRebate(bills, billsStart, billsEnd));
+  res.json(util.calculateTotalRebate(bills, start, end));
 });
 
 app.post('/feedback', multipartMiddleware, (req, res) => {
