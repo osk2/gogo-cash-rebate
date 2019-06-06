@@ -1,6 +1,5 @@
 const fs = require('fs');
 const http = require('http');
-const https = require('https');
 const express = require('express');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
@@ -11,12 +10,6 @@ const rates = require('./lib/rate');
 
 const multipartMiddleware = multipart();
 const app = express();
-const isProduction = (process.env.NODE_ENV === 'production');
-const sslOptions = {
-  ca: isProduction ? fs.readFileSync(config.ca) : '',
-  key: isProduction ? fs.readFileSync(config.key) : '',
-  cert: isProduction ? fs.readFileSync(config.cert) : ''
-};
 
 app.use(express.static('public'));
 app.use(helmet());
@@ -78,12 +71,7 @@ app.post('/feedback', multipartMiddleware, (req, res) => {
   });
 });
 
-if (isProduction) {
-  https.createServer(sslOptions, app).listen(config.port, () => {
-    console.log('App listening on port', config.port);
-  });
-} else {
-  http.createServer(app).listen(config.port, () => {
-    console.log('App listening on port', config.port);
-  });
-}
+
+http.createServer(app).listen(config.port, () => {
+  console.log('App listening on port', config.port);
+});

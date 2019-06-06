@@ -33,16 +33,6 @@ bower install
 
 ## Usage
 
-### Production Mode
-
-```shell
-NODE_ENV=production node .
-```
-
-### Development Mode
-
-In order to develop locally, this mode will run without SSL
-
 ```shell
 node .
 ```
