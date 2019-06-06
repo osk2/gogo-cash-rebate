@@ -6,7 +6,7 @@ ADD . /src
 ARG env=production
 
 RUN yarn global add bower \
-  && bower install \
+  && bower install --allow-root \
   && yarn
 
 WORKDIR /src
