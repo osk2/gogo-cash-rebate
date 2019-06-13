@@ -11,7 +11,7 @@ Cash rebate calculator for Taishin @GoGo
 
 ## Demo
 
-[https://osk2.me:9090](https://osk2.me:9090)
+[https://gogo.osk2.me](https://gogo.osk2.me)
 
 ## Prerequisite
 
