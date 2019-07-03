@@ -4,7 +4,7 @@ Cash rebate calculator for Taishin @GoGo
 
 > 台新 @GoGo 現金回饋計算機
 
-[![Website](https://img.shields.io/website-up-down-green-red/https/osk2.me%3A9090.svg)](https://osk2.me:9090)
+[![Website](https://img.shields.io/website-up-down-green-red/https/gogo.osk2.me.svg)](https://gogo.osk2.me)
 [![Build Status](https://travis-ci.org/osk2/gogo-cash-rebate.svg?branch=master)](https://travis-ci.org/osk2/gogo-cash-rebate)
 [![Known Vulnerabilities](https://snyk.io/test/github/osk2/gogo-cash-rebate/badge.svg?targetFile=package.json)](https://snyk.io/test/github/osk2/gogo-cash-rebate?targetFile=package.json)
 [![codecov](https://codecov.io/gh/osk2/gogo-cash-rebate/branch/master/graph/badge.svg)](https://codecov.io/gh/osk2/gogo-cash-rebate)
