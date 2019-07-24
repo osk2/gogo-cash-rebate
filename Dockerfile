@@ -5,13 +5,10 @@ ADD . /src
 
 ARG env=production
 
-RUN apt-get update \
-  && apt-get install build-essential git vim -y --no-install-recommends \
-  && rm -rf /var/lib/apt/lists/*
-
 RUN yarn global add bower \
   && bower install --allow-root \
-  && yarn
+  && yarn \
+  && yarn global remove bower
 
 WORKDIR /src
 EXPOSE 9090
