@@ -8,12 +8,11 @@ services:
 cache:
   yarn: true
   directories:
-    - public/components
+    - node_modules
 before_install:
-  - yarn global add bower codecov istanbul
+  - yarn global add codecov istanbul
 install:
   - yarn
-  - bower install
 script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
   - codecov

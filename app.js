@@ -12,6 +12,7 @@ const multipartMiddleware = multipart();
 const app = express();
 
 app.use(express.static('public'));
+app.use('/components', express.static('node_modules'));
 app.use(helmet());
 app.disable('x-powered-by');
 

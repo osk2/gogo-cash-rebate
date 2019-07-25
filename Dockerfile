@@ -5,10 +5,7 @@ ADD . /src
 
 ARG env=production
 
-RUN yarn global add bower \
-  && bower install --allow-root \
-  && yarn \
-  && yarn global remove bower
+RUN yarn
 
 WORKDIR /src
 EXPOSE 9090
