@@ -17,7 +17,6 @@ Cash rebate calculator for Taishin @GoGo
 
 - Node.js version >= 10
 - [Yarn](https://yarnpkg.com)
-- [Bower](https://bower.io)
 
 ## Installation
 
@@ -25,16 +24,10 @@ Cash rebate calculator for Taishin @GoGo
 yarn
 ```
 
-and 
-
-```shell
-bower install
-```
-
 ## Usage
 
 ```shell
-node .
+yarn start
 ```
 
 App will listen on port 9090 by default
