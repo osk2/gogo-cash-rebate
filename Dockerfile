@@ -10,4 +10,5 @@ RUN yarn
 WORKDIR /src
 EXPOSE 9090
 ENV NODE_ENV $env
+ENV LC_ALL C.UTF-8
 CMD ["npm", "start"]
