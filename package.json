@@ -20,18 +20,18 @@
     "connect-multiparty": "^2.2.0",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
-    "helmet": "^3.15.0",
+    "helmet": "^3.21.1",
     "jquery": "^3.4.1",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
-    "snyk": "^1.199.1",
+    "snyk": "^1.230.5",
     "vue": "^2.6.10",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.15.0"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "eslint": "^6.0.0",
-    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.14.0",
     "mocha": "^6.1.2"
   },
