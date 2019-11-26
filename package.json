@@ -16,7 +16,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "body-parser": "^1.18.3",
-    "bootstrap": "3",
+    "bootstrap": "^4.4.0",
     "connect-multiparty": "^2.2.0",
     "express": "^4.16.4",
     "font-awesome": "^4.7.0",
