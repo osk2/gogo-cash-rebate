@@ -1,37 +1,37 @@
 language: node_js
 node_js:
-  - 10
-  - 11
-  - 12
+- 10
+- 11
+- 12
 services:
-  - docker
+- docker
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
 before_install:
-  - yarn global add codecov istanbul
+- yarn global add codecov istanbul
 install:
-  - yarn
+- yarn
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
-  - codecov
-  - yarn run lint
-  - docker build --pull -t "${IMAGE_NAME}" .
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
-  - docker push "${IMAGE_NAME}"
+- istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec
+- codecov
+- yarn run lint
+- docker build --pull -t "${IMAGE_NAME}" .
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+- docker push "${IMAGE_NAME}"
 notifications:
   slack:
     rooms:
-      - araytek:B8Xevy6shC51ftn3tBiZR8fw
+    - araytek:B8Xevy6shC51ftn3tBiZR8fw
     on_success: change
     on_failure: always
 branches:
   only:
-    - master
-    - "/^greenkeeper.*$/"
+  - master
+  - "/^greenkeeper.*$/"
 env:
   global:
-    secure: "hegKmc08gxX+kap5wQH81LB9DQiRFsV+AUazd/Tyl52+JBCoDFlIii3Zs0+RbaYDfwI1m6UnrTvwEKRQOLrck3sosD8GI7v8kzWarTJYVi2DD+2HBVMoUi4s6UNVnIhk1mQeFc61KasaNVtb1mWSnsQD7XLaSA6hUyZhNOTJxIsQfPk4YxbQCuh7DdaEwC4/0Y4y1upTE2PqRz09Unmk0KCf9EqmDhb+P0THrBWBhIEa7uH0FXF+n0fwProYKm0PQ9nzOH9+cYwWM5rhVKQx2SgY6ePxOZQaj+4CIjml4eQjFLizdsCNPf0L/lxRAmWOwdKDnO3n606SQ2XfCx3hfyNTbWqFgeaJYSGFSduLAyTfQX+na+6B5v0ogvQilQwe0312OabQx4rFZCBEw02b7HMDKxFvCgOX7LZK48mtq5bcQrhPX7yqnwYpOBhcohTFEjTpFPmA+NCE3vt6mcnS2l9GvsSFIYW+cq/2kUzRIC9PZ7ZkamPoFcQXKK3gTs9eNMa+lRILwcD+bzlcttzvBgMm4/Ah8/Zba6JQcLDBw4MtcJPhm76cNtZ4hQMuF7sAW4wwXXdl0SZou0fH+3XfvZvg97XbHaCyrR3C0goQ8/6BgxEZ+ivv7ZLQzQKYpiT4JJirl81rIHZp53fQPx23/dt4Z0P4UEx7HFNiW0opeqA="
-    - PROJECT_NAME: osk2/gogo-cash-rebate
-    - IMAGE_NAME: ${PROJECT_NAME}:${TRAVIS_COMMIT:0:8}
+  - secure: w2qyilNBXTlddPopoo9bW75iz5Jqxkk1YPn245DG9PzHl7TzpLeolO337yqJq0JdHI9wLrWUAleLvQIJo7LNWMYdpQu5yTbkNF2l/2vjh8UTLRWr50jlcsLIDXxI4+TKVyVff69UoHlJ/MY0abnNrJbKAK+Npl/FDymRUDlQTXYJytsJMhHjpWrE6wlMPrKlB7urbL7LIK153feYEWZzfdmE1A4sFUDytbpCRLpwN+EMpP8gYPjsueyoOKrPNx44kWiEVKOuAco0nIS7fZGFVuj51KDVKFxJeQIe5R0PQTzQGgldtyfk+uHkF17UIFPcE+DtJHNOJgW3RBWHQ41MRq+7Cm3MUG67Vk98jwvkj7BMK/AaW/v5GIPa33TVZBxhhUWXcur0Yv38OS3HHVbw4Lp4gk/dpu9cvOgc0CGjUi+K7cnEksCF2MgoEVbvuxFrp4UmSZC1wAWiCscx7M94sel7i+nwWDkexsntUH9kdzUy0iQU4vSYJ4kylnZHNw0eByyle3tOX2Zel7BrwEBVJjq/OqrOYD3RoYw9GyAzTPGq3VhnqcrLQKop4sxwPhZ743sl9oaJUuO5UjYUk+v+D9Lyv885MtOEPOCjhi0NUUukvcRFUt2jYXIrZWDOd2LbdaEb0ppqa11Lim9kE6Uwq8h2Ca/cYrr1drSy5hdWB8A=
+  - PROJECT_NAME: osk2/gogo-cash-rebate
+  - IMAGE_NAME: "${PROJECT_NAME}:${TRAVIS_COMMIT:0:8}"
