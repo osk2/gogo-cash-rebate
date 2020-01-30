@@ -33,7 +33,7 @@
     "eslint": "^6.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.14.0",
-    "mocha": "^6.1.2"
+    "mocha": "^7.0.1"
   },
   "snyk": true
 }
