@@ -21,7 +21,7 @@
     "express": "^4.17.1",
     "font-awesome": "^4.7.0",
     "helmet": "^3.23.3",
-    "jquery": "^3.5.1",
+    "jquery": "^3.6.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "snyk": "^1.464.0",
